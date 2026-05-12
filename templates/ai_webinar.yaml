@@ -1,0 +1,71 @@
+# AI Webinar Cleanup Template
+# ============================
+# Use this template for cleaning up AI-focused webinar recordings
+# (Copilot Studio, Dataverse, Power Platform, Azure AI, etc.)
+#
+# Usage:
+#   1. Copy examples/ai_webinar_project.yaml to your project folder
+#   2. Fill in video, vtt, keep_speakers, and segments
+#   3. Run: python sanitize.py your_project.yaml
+
+description: >
+  Professional cleanup of AI webinar recordings from Teams.
+  Removes non-target speakers, admin chatter (muting incidents,
+  recording notices, chat references), and meeting artifacts.
+  Keeps only the designated presenters with clean audio.
+
+settings:
+  crf: 22
+  audio_enhance: true
+
+  disturbance_detection:
+    # Admin/logistics phrases to detect and cut
+    admin_patterns:
+      - "mute"
+      - "unmute"
+      - "shall we"
+      - "can you hear"
+      - "screen share"
+      - "someone"
+      - "somebody"
+      - "who is"
+      - "you're muted"
+      - "am i muted"
+      - "drop this in the chat"
+      - "questions in the chat"
+      - "we were sharing the recording"
+      - "raise your hand"
+      - "put it in the q&a"
+      - "type in the chat"
+      - "is my mic on"
+
+    # Filler reactions after disturbances (also cut)
+    reaction_patterns:
+      - "amazing"
+      - "all right"
+      - "alright"
+      - "ok so"
+      - "okay so"
+      - "anyway"
+      - "moving on"
+      - "where were we"
+      - "so anyway"
+      - "let's continue"
+      - "back to"
+      - "as i was saying"
+
+    # Standalone admin phrases (cut even without adjacent non-target speech)
+    standalone_admin_patterns:
+      - "you're muted"
+      - "you are muted"
+      - "am i muted"
+      - "are we muted"
+      - "i think you're muted"
+      - "can you hear me"
+      - "is my mic"
+      - "we're sharing the recording"
+      - "we were sharing the recording"
+      - "drop this image into the chat"
+      - "questions in the chat"
+      - "let me share my screen"
+      - "can you see my screen"

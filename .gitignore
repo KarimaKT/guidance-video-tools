@@ -1,0 +1,49 @@
+# Video/audio files
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.wav
+*.mp3
+*.aac
+*.m4a
+
+# Temp/working files
+_edit_temp*/
+_tmp_*
+_verify_*
+*.png
+!assets/*.png
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Project outputs
+output/
+input/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Transcripts (may contain PII)
+*.vtt
+*.srt
+
+# User project configs (keep examples, not personal projects)
+*_project.yaml
+!examples/*_project.yaml
