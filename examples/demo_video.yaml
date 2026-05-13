@@ -1,0 +1,123 @@
+# Teams Meeting Sanitizer — Feature Demo Video
+# 90-second explainer: what the tool does and how to use it
+# Voice: Professional, clear, slightly upbeat
+
+title: "Teams Meeting Sanitizer — Feature Overview"
+resolution: "1920x1080"
+fps: 30
+voice: "en-US-AriaNeural"
+voice_rate: "+12%"
+
+scenes:
+  # ── Opening (0-8s) ──
+  - title: "Teams Meeting Sanitizer"
+    subtitle: "From raw recording to broadcast-ready video"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#4fc3f7"
+    animation: fade_in
+    narration: >
+      Teams Meeting Sanitizer. Turn any meeting recording into a
+      polished, publish-ready video — automatically.
+
+  # ── The Problem (8-20s) ──
+  - title: "The Problem"
+    icon: "😩"
+    bullets:
+      - "Non-target speakers interrupting"
+      - "\"Am I muted?\" and admin chatter"
+      - "Participant tiles showing in the panel"
+      - "Background noise and inconsistent volume"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#f06292"
+    narration: >
+      You've recorded a great webinar. But the raw file has interruptions,
+      muting incidents, visible participant tiles, admin chatter,
+      and inconsistent audio. Publishing it as-is? Not an option.
+
+  # ── The Solution (20-32s) ──
+  - title: "The Solution"
+    icon: "✨"
+    bullets:
+      - "Transcript-driven analysis"
+      - "Automatic disturbance detection"
+      - "Smart cutting (not just muting)"
+      - "Visual masking + audio enhancement"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#81c784"
+    narration: >
+      This tool reads your meeting transcript, identifies every
+      disturbance, and cuts them cleanly. No dead air, no awkward mutes.
+      Plus it masks non-target participants and enhances your audio
+      to broadcast standards.
+
+  # ── How It Works (32-50s) ──
+  - title: "Configure → Audit → Render"
+    subtitle: "Three steps to a polished video"
+    bullets:
+      - "1. YAML config: template + speakers + segments"
+      - "2. Audit: review every cut before rendering"
+      - "3. Render: one command, professional output"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#ffb74d"
+    narration: >
+      Three steps. Write a YAML config — pick a template, set your speakers.
+      Audit — review every cut the tool plans. Render — one command produces
+      your final video with masks and enhanced audio.
+
+  # ── Key Features (50-72s) ──
+  - title: "Smart Disturbance Detection"
+    icon: "🧠"
+    bullets:
+      - "Catches non-target speech + admin reactions"
+      - "\"Shall we mute you?\" → CUT (not just the interruption)"
+      - "Post-disturbance filler → CUT"
+      - "Sub-second bleeds → MUTE (last resort)"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#f06292"
+    narration: >
+      The detection is smart. It catches the interruption AND the admin
+      reaction. "Shall we mute you?" gets cut along with the disturbance.
+      No dead air, no traces.
+
+  - title: "Pixel-Level Layout Detection"
+    icon: "👁️"
+    bullets:
+      - "Auto-detects panel, tiles, and name bars"
+      - "Masks non-target participants"
+      - "Handles layout switches mid-video"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#4fc3f7"
+    narration: >
+      Visually, it analyzes the video frame pixel-by-pixel. Finds the
+      participant panel, detects tiles, and masks anyone who shouldn't
+      be visible — even if the layout changes mid-recording.
+
+  # ── Templates & Close (72-90s) ──
+  - title: "Templates & Iteration"
+    icon: "🔄"
+    bullets:
+      - "Reusable templates per meeting type"
+      - "Audit → tweak → re-run"
+      - "Built-in: AI Webinar template"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#ffb74d"
+    narration: >
+      Templates make it reusable. Define patterns once, iterate with
+      audit and tweak, and apply across all your recordings.
+
+  # ── Closing (82-90s) ──
+  - title: "Get Started Now"
+    subtitle: "pip install -r requirements.txt && python sanitize.py --init ai_webinar"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#81c784"
+    narration: >
+      Install, initialize, and go. From raw recording to professional
+      video — that's Teams Meeting Sanitizer.

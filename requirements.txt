@@ -1,3 +1,4 @@
 Pillow>=9.0
 numpy>=1.21
 pyyaml>=6.0
+edge-tts>=6.1

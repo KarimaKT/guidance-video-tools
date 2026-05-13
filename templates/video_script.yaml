@@ -1,0 +1,34 @@
+# Video Creator Template
+# ======================
+# Template for generating explainer/demo videos from scratch.
+# Fill in your scenes and run: python video_creator.py this_file.yaml output.mp4
+
+title: "My Video Title"
+resolution: "1920x1080"
+fps: 30
+voice: "en-US-AriaNeural"       # See voices list below
+voice_rate: "+0%"                # Speed: -50% to +100%
+# background_music: "path/to/music.mp3"
+# music_volume: 0.15
+
+# Available voices (en-US):
+#   Female: en-US-AriaNeural, en-US-JennyNeural, en-US-AvaNeural, en-US-EmmaNeural
+#   Male:   en-US-GuyNeural, en-US-AndrewNeural, en-US-BrianNeural, en-US-ChristopherNeural
+# Other locales: en-GB-SoniaNeural, en-AU-NatashaNeural, en-CA-ClaraNeural, etc.
+
+scenes:
+  - title: "Scene Title"
+    subtitle: "Optional subtitle"
+    visual: slide                 # slide, image, video, blank
+    narration: >
+      What the narrator says during this scene.
+      Duration auto-matches narration length.
+    background: "#1a1a2e"         # Dark blue (default)
+    accent_color: "#4fc3f7"       # Light blue accent
+    # icon: "🚀"                  # Optional emoji
+    # bullets:                    # Optional bullet points
+    #   - "Point one"
+    #   - "Point two"
+    # image: "path/to/screenshot.png"  # For visual: image
+    # duration: 5                 # Override auto-duration (seconds)
+    # animation: fade_in          # fade_in, slide_up, none

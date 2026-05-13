@@ -243,3 +243,64 @@ python sanitize.py project.yaml --verify 4275
 ## License
 
 MIT
+
+---
+
+## Video Creator
+
+Also included: a **video-from-scratch generator** that creates narrated videos from YAML scripts.
+
+### Quick Start
+
+```bash
+# Generate a video from a script
+python video_creator.py examples/demo_video.yaml output.mp4
+```
+
+### What It Does
+
+| Feature | How |
+|---------|-----|
+| Neural narration | Microsoft Edge TTS (free, high-quality, many voices) |
+| Animated slides | Branded backgrounds, titles, bullets, icons |
+| Image scenes | Ken Burns zoom effect on screenshots |
+| Transitions | Fade in/out between scenes |
+| Background music | Optional mix at configurable volume |
+
+### Script Format
+
+```yaml
+title: "My Explainer Video"
+voice: "en-US-AriaNeural"
+voice_rate: "+10%"
+
+scenes:
+  - title: "Introduction"
+    bullets: ["Point 1", "Point 2"]
+    narration: "Welcome to this overview..."
+    accent_color: "#4fc3f7"
+
+  - title: "Key Feature"
+    icon: "🚀"
+    image: "screenshot.png"     # optional image background
+    narration: "Here's how it works..."
+```
+
+### Available Voices
+
+| Voice | Gender | Locale |
+|-------|--------|--------|
+| `en-US-AriaNeural` | Female | US |
+| `en-US-JennyNeural` | Female | US |
+| `en-US-GuyNeural` | Male | US |
+| `en-US-AndrewNeural` | Male | US |
+| `en-GB-SoniaNeural` | Female | UK |
+| `en-AU-NatashaNeural` | Female | AU |
+
+Full list: `python -c "import asyncio, edge_tts; asyncio.run(edge_tts.list_voices())"`
+
+### Extra Dependency
+
+```bash
+pip install edge-tts
+```
