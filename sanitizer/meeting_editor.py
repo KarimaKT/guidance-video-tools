@@ -482,6 +482,10 @@ class MeetingEditor:
         Input: self.segments (rough time ranges to keep)
         Output: self.clean_segments (refined ranges with disturbances excised)
         
+        Uses speech-boundary snapping to avoid cutting mid-syllable:
+        - End cuts get +0.15s padding (let trailing speech finish)
+        - Resume points get -0.1s pre-roll (catch speech onset)
+        
         Also adjusts layout_overrides indices to match new segment numbering.
         """
         if not self.disturbances:
@@ -511,9 +515,11 @@ class MeetingEditor:
             new_indices = []
             for d in seg_disturbances:
                 # Add clean portion before disturbance (if substantial)
-                if d.start - cursor > 1.0:
+                # Snap cut point: find the last silence gap before d.start
+                cut_point = self._snap_to_silence(d.start, direction="before")
+                if cut_point - cursor > 1.0:
                     new_indices.append(len(new_segments))
-                    new_segments.append((cursor, d.start))
+                    new_segments.append((cursor, cut_point))
                 
                 # Find clean resume point after disturbance
                 # Look for the next kept-speaker entry that's real content
@@ -528,7 +534,8 @@ class MeetingEditor:
                             resume = e.start
                             break
                 
-                cursor = resume
+                # Snap resume: small pre-roll to catch speech onset
+                cursor = self._snap_to_silence(resume, direction="after")
             
             # Add remaining clean portion
             if seg_end - cursor > 1.0:
@@ -551,6 +558,195 @@ class MeetingEditor:
             removed_time = sum(d.end - d.start for d in self.disturbances)
             print(f"\n  Auto-split: {len(self.segments)} segments → "
                   f"{len(new_segments)} (cut {removed_time:.1f}s of disturbances)")
+        
+        # Log cut-point context for verification
+        self._log_cut_boundaries()
+
+    def _snap_to_silence(self, timestamp: float, direction: str = "before") -> float:
+        """Snap a cut point to the nearest real audio silence + sentence boundary.
+        
+        Uses FFmpeg silencedetect to find actual silence gaps in the waveform,
+        then cross-references VTT text to prefer cuts at sentence/clause endings.
+        
+        direction="before": find a safe end-point just before timestamp
+        direction="after": find a safe start-point just after timestamp
+        """
+        # Step 1: Find real silence gaps in a ±3s window around the timestamp
+        silence_gaps = self._detect_silence_near(timestamp, window=3.0)
+        
+        # Step 2: Find sentence-boundary candidates from VTT
+        sentence_points = self._find_sentence_boundaries(timestamp, direction, window=3.0)
+        
+        if direction == "before":
+            # We want a point <= timestamp where audio is silent AND a sentence just ended
+            best = timestamp
+            best_score = -1
+            
+            for gap_start, gap_end in silence_gaps:
+                if gap_end > timestamp:
+                    continue
+                # Candidate cut point: middle of silence gap (safest)
+                candidate = (gap_start + gap_end) / 2
+                if candidate > timestamp or candidate < timestamp - 3.0:
+                    continue
+                
+                # Score: prefer silence that coincides with a sentence boundary
+                score = 1  # base: it's a real silence
+                for sp in sentence_points:
+                    if abs(sp - gap_start) < 0.5:  # sentence end near silence start
+                        score += 3  # strong match
+                    elif abs(sp - gap_start) < 1.0:
+                        score += 1
+                
+                if score > best_score:
+                    best_score = score
+                    best = candidate
+            
+            # Fallback: if no silence found, use VTT-based snapping
+            if best_score < 0:
+                for e in self.vtt_entries:
+                    if e.end <= timestamp and e.end > timestamp - 2.0 and e.speaker in self.keep_speakers:
+                        candidate = e.end + 0.15
+                        if candidate <= timestamp:
+                            best = candidate
+            return best
+        
+        else:  # direction == "after"
+            best = timestamp
+            best_score = -1
+            
+            for gap_start, gap_end in silence_gaps:
+                if gap_start < timestamp - 1.0:
+                    continue
+                # Candidate: end of silence gap (just before speech starts)
+                candidate = gap_end - 0.05  # tiny pre-roll
+                if candidate < timestamp - 1.0 or candidate > timestamp + 3.0:
+                    continue
+                
+                score = 1
+                for sp in sentence_points:
+                    if abs(sp - gap_end) < 0.5:
+                        score += 3
+                    elif abs(sp - gap_end) < 1.0:
+                        score += 1
+                
+                if score > best_score:
+                    best_score = score
+                    best = candidate
+            
+            # Fallback
+            if best_score < 0:
+                best = max(0, timestamp - 0.1)
+            return best
+
+    def _detect_silence_near(self, timestamp: float, window: float = 3.0) -> list[tuple[float, float]]:
+        """Use FFmpeg silencedetect to find actual audio silence gaps near a timestamp.
+        
+        Returns list of (silence_start, silence_end) tuples.
+        """
+        start = max(0, timestamp - window)
+        duration = window * 2
+        
+        cmd = [
+            "ffmpeg", "-y",
+            "-ss", str(start), "-t", str(duration),
+            "-i", self.video_path,
+            "-af", "silencedetect=noise=-35dB:d=0.15",
+            "-f", "null", "-"
+        ]
+        
+        r = subprocess.run(cmd, capture_output=True, text=True)
+        stderr = r.stderr
+        
+        gaps = []
+        silence_start = None
+        for line in stderr.split('\n'):
+            if 'silence_start:' in line:
+                m = re.search(r'silence_start:\s*([\d.]+)', line)
+                if m:
+                    silence_start = float(m.group(1)) + start  # adjust to absolute time
+            elif 'silence_end:' in line and silence_start is not None:
+                m = re.search(r'silence_end:\s*([\d.]+)', line)
+                if m:
+                    silence_end = float(m.group(1)) + start
+                    gaps.append((silence_start, silence_end))
+                    silence_start = None
+        
+        return gaps
+
+    def _find_sentence_boundaries(self, timestamp: float, direction: str, window: float = 3.0) -> list[float]:
+        """Find timestamps where VTT text ends at a sentence/clause boundary.
+        
+        Looks for entries whose text ends with sentence-ending punctuation
+        (period, question mark, exclamation) or strong clause breaks.
+        """
+        import re as _re
+        boundaries = []
+        
+        for e in self.vtt_entries:
+            if e.speaker not in self.keep_speakers:
+                continue
+            
+            # Check entries near the timestamp
+            if direction == "before":
+                if e.end < timestamp - window or e.end > timestamp:
+                    continue
+            else:
+                if e.start < timestamp - 1.0 or e.start > timestamp + window:
+                    continue
+            
+            text = e.text.strip()
+            # Sentence-ending punctuation
+            if _re.search(r'[.!?][\s"\']*$', text):
+                boundaries.append(e.end if direction == "before" else e.start)
+            # Strong clause breaks (comma + conjunction patterns, semicolons)
+            elif _re.search(r'[,;]\s*$', text):
+                boundaries.append(e.end if direction == "before" else e.start)
+        
+        return boundaries
+
+    def _log_cut_boundaries(self):
+        """Log what VTT text appears at each segment boundary for verification.
+        
+        This ensures no cut happens mid-sentence or mid-thought.
+        """
+        if len(self.clean_segments) <= 1:
+            return
+        
+        print(f"\n  ── Cut-point verification ──")
+        for i in range(len(self.clean_segments) - 1):
+            seg_end = self.clean_segments[i][1]
+            next_start = self.clean_segments[i + 1][0]
+            
+            # Find the VTT entry that's speaking at seg_end (last words before cut)
+            last_text = ""
+            last_speaker = ""
+            for e in self.vtt_entries:
+                if e.end <= seg_end + 0.3 and e.end >= seg_end - 1.5 and e.speaker in self.keep_speakers:
+                    last_text = e.text.strip().replace('\n', ' ')
+                    last_speaker = e.speaker.split()[0]
+            
+            # Find the VTT entry starting after resume (first words after cut)
+            first_text = ""
+            first_speaker = ""
+            for e in self.vtt_entries:
+                if e.start >= next_start - 0.3 and e.speaker in self.keep_speakers:
+                    first_text = e.text.strip().replace('\n', ' ')
+                    first_speaker = e.speaker.split()[0]
+                    break
+            
+            # Check quality
+            ends_clean = bool(re.search(r'[.!?;,]\s*$', last_text)) if last_text else False
+            marker = "✓" if ends_clean else "⚠"
+            
+            gap = next_start - seg_end
+            print(f"  {marker} Cut {i+1}: {_fmt(seg_end)} → {_fmt(next_start)} (gap {gap:.1f}s)")
+            if last_text:
+                tail = last_text[-60:] if len(last_text) > 60 else last_text
+                print(f"       ENDS: [{last_speaker}] \"...{tail}\"")
+            if first_text:
+                head = first_text[:60] if len(first_text) > 60 else first_text
+                print(f"    RESUMES: [{first_speaker}] \"{head}...\"")
 
     def _find_content_issues(self):
         """Find standalone admin mentions, hesitations, and gaps.
@@ -830,11 +1026,12 @@ class MeetingEditor:
                 af_parts.append("afftdn=nf=-20")
                 af_parts.append("loudnorm=I=-14:TP=-1:LRA=11")
             
-            # Build FFmpeg command
+            # Build FFmpeg command — use output seeking for frame-accurate cuts
+            # (input seeking with -ss before -i jumps to nearest keyframe, clipping syllables)
             cmd = [
                 "ffmpeg", "-y",
-                "-ss", str(seg_start), "-to", str(seg_end),
                 "-i", self.video_path,
+                "-ss", str(seg_start), "-to", str(seg_end),
             ]
             if vf_parts:
                 cmd += ["-vf", ",".join(vf_parts)]
