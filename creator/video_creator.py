@@ -47,6 +47,12 @@ try:
 except ImportError:
     HAS_YAML = False
 
+try:
+    from music import fetch_music
+    HAS_MUSIC = True
+except ImportError:
+    HAS_MUSIC = False
+
 
 # ── Data Classes ─────────────────────────────────────────────────────────────
 
@@ -81,6 +87,7 @@ class VideoScript:
     voice_pitch: str = "+0Hz"
     background_music: str = ""       # Path to background music
     music_volume: float = 0.15       # Background music volume (0-1)
+    music_mood: str = ""             # Auto-fetch mood (tech, corporate, ambient, etc.)
     scenes: list = field(default_factory=list)
     font: str = "Segoe UI"
     font_bold: str = "Segoe UI Bold"
@@ -110,6 +117,7 @@ def parse_script(yaml_path: str) -> VideoScript:
     script.voice_pitch = data.get("voice_pitch", "+0Hz")
     script.background_music = data.get("background_music", "")
     script.music_volume = data.get("music_volume", 0.15)
+    script.music_mood = data.get("music_mood", "")
     script.font = data.get("font", "Segoe UI")
     script.font_bold = data.get("font_bold", "Segoe UI Bold")
     
@@ -410,6 +418,20 @@ class VideoCreator:
             # Step 3: Concatenate all scenes
             if verbose:
                 print("\n── Assembling video ──")
+            
+            # Auto-fetch background music if mood is set and no explicit path
+            if not self.script.background_music and self.script.music_mood and HAS_MUSIC:
+                total_dur = sum(d for _, d in self.scene_files)
+                if verbose:
+                    print(f"  ♪ Auto-fetching {self.script.music_mood} background music...")
+                track = fetch_music(
+                    mood=self.script.music_mood,
+                    duration_range=(max(30, total_dur - 30), total_dur + 60),
+                    verbose=verbose,
+                )
+                if track:
+                    self.script.background_music = track
+            
             self._assemble(output_path, verbose)
             
             if verbose:
@@ -638,10 +660,12 @@ class VideoCreator:
         vol = self.script.music_volume
         
         temp_out = str(self.temp_dir / "with_music.mp4")
+        vid_dur = self._get_duration(video_path)
+        fade_out_start = max(0, vid_dur - 3)
         cmd = [
             "ffmpeg", "-y", "-i", video_path, "-i", music_path,
             "-filter_complex",
-            f"[1:a]volume={vol},afade=in:st=0:d=2,afade=out:st=0:d=2[music];"
+            f"[1:a]volume={vol},afade=in:st=0:d=2,afade=out:st={fade_out_start}:d=3[music];"
             f"[0:a][music]amix=inputs=2:duration=first[aout]",
             "-map", "0:v", "-map", "[aout]",
             "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",

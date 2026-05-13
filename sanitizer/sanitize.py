@@ -19,6 +19,11 @@ import sys
 import argparse
 from pathlib import Path
 
+# Support running from repo root or from sanitizer/ directory
+_this_dir = str(Path(__file__).parent)
+if _this_dir not in sys.path:
+    sys.path.insert(0, _this_dir)
+
 from meeting_editor import MeetingEditor, Rect
 from instructions import load_instructions, list_templates, load_template
 
