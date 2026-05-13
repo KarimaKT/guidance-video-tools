@@ -1,0 +1,90 @@
+# Demo Video: Video Creator Feature Overview
+# =============================================
+# ~90 second explainer of the Video Creator tool
+# Run: python creator/video_creator.py examples/creator_demo.yaml creator_demo.mp4
+
+title: "Video Creator — Generate Videos from Descriptions"
+resolution: "1920x1080"
+fps: 30
+voice: "en-US-AndrewNeural"
+voice_rate: "+8%"
+
+scenes:
+  # ── Opening ──
+  - title: "Video Creator"
+    subtitle: "Describe it. I'll produce it."
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#ba68c8"
+    narration: >
+      Video Creator. Describe what you need, and I'll generate a professional
+      narrated video for you — from scratch.
+
+  # ── What you provide ──
+  - title: "What You Provide"
+    icon: "💡"
+    bullets:
+      - "A topic or document to explain"
+      - "Key points to cover"
+      - "Desired duration and voice"
+      - "That's it. I create everything else."
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#4fc3f7"
+    narration: >
+      Just tell me what to explain. A product feature, a process, a concept.
+      Give me the key points, pick a voice and duration — I do the rest.
+
+  # ── What I generate ──
+  - title: "What I Generate"
+    icon: "🎬"
+    bullets:
+      - "Professional animated slides"
+      - "Natural-sounding neural narration"
+      - "Smooth transitions between scenes"
+      - "Optional background music (auto-fetched)"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#81c784"
+    narration: >
+      I generate professional slides with gradient backgrounds and clean
+      typography. I narrate with neural text-to-speech — natural, clear voices.
+      I add transitions and can even auto-fetch royalty-free background music.
+
+  # ── Voices ──
+  - title: "Neural Voices"
+    subtitle: "Natural, professional, multilingual"
+    bullets:
+      - "Female: Aria, Jenny, Emma, Ava"
+      - "Male: Andrew, Guy, Brian, Christopher"
+      - "UK, Australian, Canadian and more"
+      - "Adjustable speed and pitch"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#ffb74d"
+    narration: >
+      Choose from dozens of neural voices — male or female, various accents.
+      Adjust speed and pitch to match your style. They sound natural, not robotic.
+
+  # ── How to use ──
+  - title: "Three Ways to Use"
+    bullets:
+      - "Web UI: fill in scenes interactively"
+      - "YAML script: full control, version-controlled"
+      - "CLI: python video_creator.py script.yaml out.mp4"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#4fc3f7"
+    narration: >
+      Use the web interface for quick videos. Write a YAML script for full
+      control and repeatability. Or run from the command line in your pipeline.
+
+  # ── Closing ──
+  - title: "Create Your First Video"
+    subtitle: "streamlit run app.py → Video Creator"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#ba68c8"
+    narration: >
+      Describe it. I produce it. Professional narrated videos in under a minute.
+      That's Video Creator.

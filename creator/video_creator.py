@@ -227,7 +227,7 @@ def _get_font(name: str, size: int, bold: bool = False):
 
 def generate_slide(scene: Scene, resolution: tuple, output_path: str,
                    font_name: str = "Segoe UI", font_bold: str = "Segoe UI Bold"):
-    """Generate a slide image from a scene."""
+    """Generate a professional slide image from a scene."""
     if not HAS_PIL:
         raise ImportError("Pillow required: pip install Pillow")
     
@@ -239,60 +239,104 @@ def generate_slide(scene: Scene, resolution: tuple, output_path: str,
     img = Image.new("RGB", (w, h), bg)
     draw = ImageDraw.Draw(img)
     
-    # Add subtle gradient overlay
+    # Professional gradient background (radial-ish from center-bottom)
     for y in range(h):
-        alpha = int(30 * (y / h))
-        draw.line([(0, y), (w, y)], fill=(bg[0]+alpha, bg[1]+alpha, min(bg[2]+alpha, 255)))
+        t = y / h
+        # Darker at top, slightly lighter toward bottom-center
+        r = int(bg[0] * (0.7 + 0.3 * t))
+        g = int(bg[1] * (0.7 + 0.3 * t))
+        b = int(min(bg[2] * (0.8 + 0.4 * t), 255))
+        draw.line([(0, y), (w, y)], fill=(r, g, b))
     
-    # Accent bar at top
-    draw.rectangle([(0, 0), (w, 6)], fill=accent)
+    # Subtle grid/dot pattern (adds depth)
+    for gx in range(0, w, 80):
+        for gy in range(0, h, 80):
+            dot_alpha = 15 + int(10 * (gy / h))
+            draw.ellipse([(gx-1, gy-1), (gx+1, gy+1)],
+                        fill=(bg[0]+dot_alpha, bg[1]+dot_alpha, min(bg[2]+dot_alpha, 255)))
     
-    y_cursor = h * 0.2  # Start at 20% from top
+    # Accent gradient bar at top (fades from full to transparent)
+    for x in range(w):
+        fade = 1.0 - abs(x - w/2) / (w/2) * 0.3  # stronger in center
+        bar_color = (int(accent[0]*fade), int(accent[1]*fade), int(accent[2]*fade))
+        draw.line([(x, 0), (x, 4)], fill=bar_color)
     
-    # Icon
+    # Glowing accent circle (top-right corner, subtle)
+    glow_x, glow_y = int(w * 0.85), int(h * 0.15)
+    for radius in range(120, 0, -2):
+        alpha = max(0, int(8 * (1 - radius/120)))
+        glow_color = (min(bg[0]+alpha, 255), min(bg[1]+alpha, 255), min(bg[2]+int(alpha*2), 255))
+        draw.ellipse([(glow_x-radius, glow_y-radius), (glow_x+radius, glow_y+radius)],
+                    outline=glow_color)
+    
+    y_cursor = h * 0.18  # Start at 18% from top
+    
+    # Icon (with subtle glow behind it)
     if scene.icon:
-        icon_font = _get_font(font_name, 72)
+        icon_font = _get_font(font_name, 80)
         bbox = draw.textbbox((0, 0), scene.icon, font=icon_font)
         icon_w = bbox[2] - bbox[0]
-        draw.text(((w - icon_w) / 2, y_cursor), scene.icon, fill=accent, font=icon_font)
-        y_cursor += 100
+        ix = (w - icon_w) / 2
+        # Glow circle behind icon
+        for r in range(50, 0, -1):
+            alpha = int(3 * (1 - r/50))
+            gc = (min(accent[0]//4+alpha, 255), min(accent[1]//4+alpha, 255), min(accent[2]//4+alpha, 255))
+            draw.ellipse([(ix+icon_w//2-r, y_cursor+40-r), (ix+icon_w//2+r, y_cursor+40+r)], outline=gc)
+        draw.text((ix, y_cursor), scene.icon, fill=accent, font=icon_font)
+        y_cursor += 120
     
-    # Title
+    # Title (larger, with accent underline)
     if scene.title:
-        title_font = _get_font(font_bold, 64, bold=True)
-        # Word wrap title
-        lines = _wrap_text(scene.title, title_font, w - 200, draw)
+        title_font = _get_font(font_bold, 62, bold=True)
+        lines = _wrap_text(scene.title, title_font, w - 240, draw)
+        title_start_y = y_cursor
         for line in lines:
             bbox = draw.textbbox((0, 0), line, font=title_font)
             line_w = bbox[2] - bbox[0]
             draw.text(((w - line_w) / 2, y_cursor), line, fill=text_color, font=title_font)
-            y_cursor += 80
-        y_cursor += 20
+            y_cursor += 78
+        # Accent underline below title
+        line_y = int(y_cursor + 8)
+        line_w = min(200, w // 4)
+        draw.rectangle([(w//2 - line_w//2, line_y), (w//2 + line_w//2, line_y + 3)], fill=accent)
+        y_cursor += 35
     
     # Subtitle
     if scene.subtitle:
-        sub_font = _get_font(font_name, 36)
-        lines = _wrap_text(scene.subtitle, sub_font, w - 200, draw)
+        sub_font = _get_font(font_name, 32)
+        lines = _wrap_text(scene.subtitle, sub_font, w - 240, draw)
         for line in lines:
             bbox = draw.textbbox((0, 0), line, font=sub_font)
             line_w = bbox[2] - bbox[0]
-            draw.text(((w - line_w) / 2, y_cursor), line, fill=(*accent, 200), font=sub_font)
-            y_cursor += 50
-        y_cursor += 30
-    
-    # Bullets
-    if scene.bullets:
-        bullet_font = _get_font(font_name, 32)
-        x_start = w * 0.15
-        for bullet in scene.bullets:
-            # Bullet dot
-            draw.ellipse(
-                [(x_start, y_cursor + 12), (x_start + 12, y_cursor + 24)],
-                fill=accent
+            # Slightly transparent accent color for subtitle
+            sub_color = (
+                int(accent[0]*0.8 + text_color[0]*0.2),
+                int(accent[1]*0.8 + text_color[1]*0.2),
+                int(accent[2]*0.8 + text_color[2]*0.2),
             )
-            # Bullet text
-            draw.text((x_start + 30, y_cursor), bullet, fill=text_color, font=bullet_font)
-            y_cursor += 55
+            draw.text(((w - line_w) / 2, y_cursor), line, fill=sub_color, font=sub_font)
+            y_cursor += 45
+        y_cursor += 25
+    
+    # Bullets (with accent dots and proper spacing)
+    if scene.bullets:
+        bullet_font = _get_font(font_name, 30)
+        x_start = int(w * 0.15)
+        max_bullet_w = int(w * 0.7)
+        for bullet in scene.bullets:
+            # Accent bullet marker (rounded square)
+            bx = x_start
+            by = int(y_cursor + 10)
+            draw.rounded_rectangle([(bx, by), (bx+10, by+10)], radius=3, fill=accent)
+            # Bullet text (with wrapping)
+            bullet_lines = _wrap_text(bullet, bullet_font, max_bullet_w, draw)
+            for bl in bullet_lines:
+                draw.text((x_start + 25, y_cursor), bl, fill=text_color, font=bullet_font)
+                y_cursor += 42
+            y_cursor += 10
+    
+    # Bottom accent line
+    draw.rectangle([(0, h-3), (w, h)], fill=(accent[0]//3, accent[1]//3, accent[2]//3))
     
     img.save(output_path, quality=95)
     return output_path

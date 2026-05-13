@@ -1,0 +1,93 @@
+# Demo Video: Meeting Sanitizer Feature Overview
+# ================================================
+# ~90 second explainer of the Meeting Sanitizer tool
+# Run: python creator/video_creator.py examples/sanitizer_demo.yaml sanitizer_demo.mp4
+
+title: "Meeting Sanitizer — Clean Recordings Automatically"
+resolution: "1920x1080"
+fps: 30
+voice: "en-US-AriaNeural"
+voice_rate: "+10%"
+
+scenes:
+  # ── Opening ──
+  - title: "Meeting Sanitizer"
+    subtitle: "From messy recording to publish-ready video"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#4fc3f7"
+    narration: >
+      Meeting Sanitizer. Transform any Teams or Zoom recording into a
+      polished, professional video — automatically.
+
+  # ── What you provide ──
+  - title: "What You Provide"
+    icon: "📦"
+    bullets:
+      - "Your meeting recording (.mp4)"
+      - "The transcript file (.vtt)"
+      - "Which speakers to keep"
+      - "That's it. I handle everything else."
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#81c784"
+    narration: >
+      Here's what you need to give me. Your recording file, the transcript
+      that Teams auto-generates, and the names of speakers to keep. That's all.
+      I handle everything else.
+
+  # ── What I do ──
+  - title: "What I Do Automatically"
+    icon: "🤖"
+    bullets:
+      - "Find and CUT all non-target speakers"
+      - "Detect admin chatter and cut it too"
+      - "Mask participant tiles in the video"
+      - "Enhance audio to broadcast quality"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#f06292"
+    narration: >
+      I analyze the transcript, find every disturbance — non-target speakers,
+      admin chatter like "am I muted?", even filler reactions. I cut them
+      completely, mask participant tiles, and normalize your audio.
+
+  # ── Smart detection ──
+  - title: "Smart Detection"
+    subtitle: "Not just the interruption — the reaction too"
+    bullets:
+      - "Someone unmutes accidentally → CUT"
+      - "You say \"shall we mute you?\" → ALSO CUT"
+      - "\"Amazing. So anyway...\" → ALSO CUT"
+      - "Zero traces left behind"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#ba68c8"
+    narration: >
+      The intelligence is in the detection. I don't just remove the interruption.
+      I catch your reaction to it too. "Shall we mute you?" gets cut. "Amazing,
+      so anyway" right after — also cut. No dead air, no awkward transitions.
+
+  # ── Workflow ──
+  - title: "Simple Workflow"
+    bullets:
+      - "1. Upload or point to your files"
+      - "2. Review the audit (see every planned cut)"
+      - "3. Click render — done"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#ffb74d"
+    narration: >
+      The workflow is simple. Upload your files, review the audit report to see
+      exactly what gets cut, then render. You can tweak and re-run until
+      you're satisfied. Use the web UI or command line — your choice.
+
+  # ── Closing ──
+  - title: "Try It Now"
+    subtitle: "streamlit run app.py"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#81c784"
+    narration: >
+      Install, upload, render. Professional meeting videos in minutes.
+      That's Meeting Sanitizer.
