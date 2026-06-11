@@ -1,0 +1,54 @@
+title: CAT Video Tools guided portal tour
+url: http://localhost:8601
+max_screen_seconds: 4.0
+steps:
+- label: Open the portal
+  action: goto
+  narration: At zero seconds, we open CAT Video Tools, the local portal for production-ready
+    video workflows.
+  screenshot: examples/web_walkthroughs/screens/01-open-the-portal.png
+- label: Review workflow demos
+  action: scroll:0.28
+  narration: At four seconds, each workflow carries its own demo instead of repeating
+    a separate gallery.
+  screenshot: examples/web_walkthroughs/screens/02-review-workflow-demos.png
+- label: Compare the four workflows
+  action: scroll:0.62
+  narration: At eight seconds, the page separates cleanup, clipping, demo videos,
+    and teaching videos.
+  screenshot: examples/web_walkthroughs/screens/03-compare-the-four-workflows.png
+- label: Open Test Gallery
+  action: click:Test Gallery
+  narration: At twelve seconds, the Test Gallery shows current app demos and the webinar
+    clips.
+  screenshot: examples/web_walkthroughs/screens/04-open-test-gallery.png
+- label: Open Meeting Sanitizer
+  action: click:Meeting Sanitizer
+  narration: At sixteen seconds, Meeting Sanitizer prepares recorded meetings for
+    safer sharing.
+  screenshot: examples/web_walkthroughs/screens/05-open-meeting-sanitizer.png
+- label: Open Clip Extractor
+  action: click:Clip Extractor
+  narration: At twenty seconds, Clip Extractor turns long recordings into intentional
+    short clips.
+  screenshot: examples/web_walkthroughs/screens/06-open-clip-extractor.png
+- label: Open Demo Video Creator
+  action: click:Demo Video Creator
+  narration: At twenty four seconds, Demo Video Creator turns scripts and web steps
+    into narrated product tours.
+  screenshot: examples/web_walkthroughs/screens/07-open-demo-video-creator.png
+- label: Show guided web tour builder
+  action: wait
+  narration: At twenty eight seconds, the guided web tour builder captures a page,
+    a sequence, and narration.
+  screenshot: examples/web_walkthroughs/screens/08-show-guided-web-tour-builder.png
+- label: Open Technical Explainer Studio
+  action: click:Technical Explainer Studio
+  narration: At thirty two seconds, Technical Explainer Studio is for deeper source-grounded
+    teaching videos.
+  screenshot: examples/web_walkthroughs/screens/09-open-technical-explainer-studio.png
+- label: Conclude the portal tour
+  action: wait
+  narration: 'At thirty six seconds, the point is clear: demos show the product, explainers
+    teach the concept.'
+  screenshot: examples/web_walkthroughs/screens/10-conclude-the-portal-tour.png

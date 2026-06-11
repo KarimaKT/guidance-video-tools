@@ -1,0 +1,60 @@
+title: Clip Extractor - Publishable Clips
+resolution: 1280x720
+fps: 30
+voice: en-US-AriaNeural
+voice_rate: +8%
+music_volume: 0
+scenes:
+- title: 'Introducing CAT Video Tools: Clip Extractor'
+  subtitle: Choose the best moments, control the ranges, and export clean clips
+  icon: C
+  background: '#0f172a'
+  accent_color: '#93c5fd'
+  narration: 'Introducing CAT Video Tools: Clip Extractor. We built this app for turning
+    a long recording into short, publishable clips people will actually watch. You
+    choose the moments that matter, add titles and categories, and the app generates
+    clean MP4 clips with normalized audio and reviewable validation checks.'
+  bullets:
+  - Upload a long recording
+  - Choose clip ranges
+  - Name and group clips
+  - Generate clean MP4s
+  animation: fade_in
+- title: You control the publishing decision
+  subtitle: Pick the range, title, and category before anything renders
+  icon: A
+  background: '#172554'
+  accent_color: '#93c5fd'
+  narration: The app does not guess what is publishable. You decide the start time,
+    end time, title, and category for each clip. That keeps the judgment with the
+    maker while the tool handles the repetitive media work.
+  bullets:
+  - Start time
+  - End time
+  - Clip title
+  - Category
+- title: The app generates durable clips
+  subtitle: Clean encoding and audio handling are built in
+  icon: B
+  background: '#1f2937'
+  accent_color: '#34d399'
+  narration: 'After you choose the content, the app generates clips that are meant
+    to survive review: clean encoding, normalized audio, and stream checks instead
+    of fragile copy-only cuts.'
+  bullets:
+  - Frame-accurate output
+  - Normalized audio
+  - Validated streams
+  animation: slide_up
+- title: Review and reuse the clip set
+  subtitle: Download individual clips or a package
+  icon: C
+  background: '#581c87'
+  accent_color: '#f0abfc'
+  narration: The result is a clip set you can inspect, download, and reuse in demos,
+    galleries, or follow-up assets. The app handles the packaging so the maker can
+    focus on choosing the right evidence.
+  bullets:
+  - Playable clips
+  - Clean audio
+  - ZIP-friendly outputs

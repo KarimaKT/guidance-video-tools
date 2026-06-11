@@ -1,0 +1,59 @@
+title: CAT Video Tools guided portal tour
+url: http://localhost:8601
+max_screen_seconds: 4.0
+steps:
+- label: Open the portal
+  action: goto
+  narration: 'Introducing CAT Video Tools, a local hub for making recorded video useful:
+    clean meeting recordings, extract strong clips, create guided product demos, and
+    build deeper technical explainers.'
+  screenshot: examples/web_walkthroughs/screens/01-open-the-portal.png
+- label: Review workflow demos
+  action: scroll:0.28
+  narration: The hub is organized around outcomes, not tool chores. Each workflow
+    includes proof of what it produces, so a maker can choose the right path before
+    starting.
+  screenshot: examples/web_walkthroughs/screens/02-review-workflow-demos.png
+- label: Compare the four workflows
+  action: scroll:0.62
+  narration: 'The four sections separate different jobs: privacy-safe meeting cleanup,
+    publishable clips, product walkthroughs, and source-grounded teaching videos.'
+  screenshot: examples/web_walkthroughs/screens/03-compare-the-four-workflows.png
+- label: Open Test Gallery
+  action: click:Test Gallery
+  narration: The Test Gallery is the review surface. It keeps generated demos, walkthroughs,
+    and clips visible so quality can be judged before anything is shared.
+  screenshot: examples/web_walkthroughs/screens/04-open-test-gallery.png
+- label: Open Meeting Sanitizer
+  action: click:Meeting Sanitizer
+  narration: Meeting Sanitizer helps make recordings safer to reuse by focusing on
+    the intended speakers and reducing unnecessary exposure before a clip leaves the
+    workspace.
+  screenshot: examples/web_walkthroughs/screens/05-open-meeting-sanitizer.png
+- label: Open Clip Extractor
+  action: click:Clip Extractor
+  narration: 'Clip Extractor turns a long recording into intentional evidence: a short
+    segment with context, boundaries, and reviewable output.'
+  screenshot: examples/web_walkthroughs/screens/06-open-clip-extractor.png
+- label: Open Demo Video Creator
+  action: click:Demo Video Creator
+  narration: Demo Video Creator is for showing an app clearly. It combines a value-led
+    script with guided web steps so the final tour explains what the product does
+    for the viewer.
+  screenshot: examples/web_walkthroughs/screens/07-open-demo-video-creator.png
+- label: Show guided web tour builder
+  action: wait
+  narration: The guided tour builder captures the page sequence, step labels, and
+    narration together, turning raw navigation into a coherent product story.
+  screenshot: examples/web_walkthroughs/screens/08-show-guided-web-tour-builder.png
+- label: Open Technical Explainer Studio
+  action: click:Technical Explainer Studio
+  narration: 'Technical Explainer Studio has a different job: teaching. It uses source
+    material, diagrams, and stronger narration when the viewer needs to understand
+    a concept, not just watch a feature.'
+  screenshot: examples/web_walkthroughs/screens/09-open-technical-explainer-studio.png
+- label: Conclude the portal tour
+  action: wait
+  narration: 'That is the hub pattern: pick the right video job, generate a reviewable
+    artifact, and keep the message professional enough to reuse.'
+  screenshot: examples/web_walkthroughs/screens/10-conclude-the-portal-tour.png

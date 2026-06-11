@@ -1,0 +1,10 @@
+flowchart LR
+  Row[Test case] --> Path[Capability use
+Keyword / tool / topic]
+  Row --> Answer[General quality
+Compare meaning
+Custom rubric]
+  Path --> Gate[Quality gate]
+  Answer --> Gate
+  Gate --> Auto[Connector or REST API
+CI / schedule / dashboard]

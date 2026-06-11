@@ -1,0 +1,14 @@
+[
+  {
+    "pass": "pass 1 - learner orientation",
+    "status": "passed",
+    "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+    "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+  },
+  {
+    "pass": "pass 2 - engagement/usefulness",
+    "status": "passed",
+    "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+    "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+  }
+]

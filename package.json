@@ -1,0 +1,29 @@
+{
+  "name": "cat-video-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Power CAT Video Production Suite: sanitizer, clip extractor, demo video creator, and technical explainer workflows.",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "python test/smoke_media_pipeline.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KarimaKT/cat-video-tools.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/KarimaKT/cat-video-tools/issues"
+  },
+  "homepage": "https://github.com/KarimaKT/cat-video-tools#readme",
+  "devDependencies": {
+    "pptxgenjs": "^4.0.1"
+  }
+}

@@ -1,0 +1,78 @@
+title: Technical Explainer Studio - From Confusion to Clarity
+resolution: 1280x720
+fps: 30
+voice: en-US-JennyNeural
+voice_rate: +8%
+music_volume: 0
+scenes:
+- title: 'Introducing CAT Video Tools: Technical Explainer Studio'
+  subtitle: An app for turning hard technical topics into teachable video assets
+  icon: '!'
+  background: '#0f172a'
+  accent_color: '#93c5fd'
+  narration: 'Introducing CAT Video Tools: Technical Explainer Studio. We built this
+    app for topics where a simple summary is not enough: it gathers the user''s explanation,
+    official docs, local sources, images, and demos, then builds a reviewable teaching
+    plan before rendering video.'
+  bullets:
+  - User framing
+  - Learn docs and local sources
+  - Diagrams and screenshots
+  - Reviewable storyboard
+  animation: fade_in
+- title: Start with the misunderstanding
+  subtitle: The user's explanation drives the video
+  icon: '?'
+  background: '#111827'
+  accent_color: '#60a5fa'
+  narration: 'Technical Explainer Studio starts with the user''s framing: what the
+    topic means, what people misunderstand, and which product aspect needs to stand
+    out.'
+  bullets:
+  - User explanation
+  - Misunderstandings
+  - Feature focus
+  - Title-page direction
+  animation: fade_in
+- title: Ground it in sources
+  subtitle: Learn docs, local folders, screenshots, and demos
+  icon: S
+  background: '#2F3C7E'
+  accent_color: '#F96167'
+  narration: The app accepts any Microsoft Learn page, local folders, images, code
+    samples, and existing demo clips. Sources become traceable inputs, not hidden
+    prompt context.
+  bullets:
+  - Any Learn doc page
+  - Local folders
+  - Existing demo video
+  - Screenshots and code
+  animation: slide_up
+- title: Self-critique before rendering
+  subtitle: Accuracy, clarity, and visual usefulness
+  icon: "/u2713"
+  background: '#6D2E46'
+  accent_color: '#ECE2D0'
+  narration: Before video generation, the plan critiques itself for accuracy, source
+    support, jargon, misconception coverage, and whether each visual actually improves
+    understanding.
+  bullets:
+  - Source support
+  - Plain language
+  - One job per scene
+  - Decision rule
+  animation: fade_in
+- title: Editable storyboard, then video
+  subtitle: Advisory-ready explainers
+  icon: '4'
+  background: '#14532d'
+  accent_color: '#86efac'
+  narration: Only after review does the app render a short narrated explainer with
+    slides, screenshots, diagrams, or demo captures. The goal is understanding, not
+    just automation.
+  bullets:
+  - Review scenes
+  - Edit narration
+  - Assign visuals
+  - Generate validated MP4
+  animation: slide_up

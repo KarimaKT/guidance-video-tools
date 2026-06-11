@@ -1,0 +1,82 @@
+title: Demo Video Creator - From Notes to Product Demo
+resolution: 1280x720
+fps: 30
+voice: en-US-JennyNeural
+voice_rate: +8%
+music_volume: 0
+scenes:
+- title: 'Introducing CAT Video Tools: Demo Video Creator'
+  subtitle: Build product demos from a script, optional web tour, voice, and reviewable
+    output
+  icon: D
+  background: '#0f172a'
+  accent_color: '#93c5fd'
+  narration: 'Introducing CAT Video Tools: Demo Video Creator. We built this app for
+    turning a feature story into a polished demo. You bring the message: what the
+    product is, who it helps, what viewers should notice, and which app steps prove
+    it. The tool can generate the slides, narration, optional guided web tour footage,
+    and a validated MP4 you can review before sharing.'
+  bullets:
+  - Product story
+  - Optional web tour
+  - Narration and slides
+  - Validated MP4
+  animation: none
+- title: Choose what you want to control
+  subtitle: Bring a tight brief, or provide the exact assets and page steps
+  icon: '1'
+  background: '#1f2937'
+  accent_color: '#60a5fa'
+  narration: 'You can stay lightweight and let the app create the structure from a
+    short brief, or you can control the exact inputs: uploaded images, an existing
+    clip, a page URL, a click sequence, voice, scene order, and the closing takeaway.
+    Either way, the output is still a viewer-facing demo, not a list of production
+    tasks.'
+  bullets:
+  - Brief or detailed script
+  - Upload images or clips
+  - Optional page sequence
+  - Editable scene order
+  animation: none
+- title: Generate what the viewer needs to see
+  subtitle: The app turns raw navigation into a guided proof clip
+  icon: '2'
+  background: '#111827'
+  accent_color: '#f472b6'
+  narration: When the demo needs live product proof, give the app the URL and the
+    sequence of clicks or scrolls. It captures silent raw walkthrough footage with
+    visible step markers and a sidecar description. The final demo script then explains
+    the value over that footage, so the viewer sees the UI while hearing why it matters.
+  bullets:
+  - URL and actions
+  - Silent raw footage
+  - Step markers
+  - Description sidecar
+  animation: none
+- title: Portal guided tour demo
+  subtitle: Silent raw walkthrough footage assembled into the narrated demo
+  visual: video
+  video: examples/web_walkthroughs/cat-video-tools-portal-walkthrough-raw.mp4
+  narration: Here is the guided tour footage inside the demo. The raw clip stays silent
+    on purpose. The value, context, and feature explanation come from the Demo Creator
+    script, while the description file preserves what each UI step is supposed to
+    prove.
+  bullets: []
+  background: '#0f172a'
+  accent_color: '#93c5fd'
+  animation: none
+- title: Review the finished product demo
+  subtitle: Check message, media, narration, and output quality before sharing
+  icon: '3'
+  background: '#312e81'
+  accent_color: '#fbbf24'
+  narration: 'The final output is a product demo you can inspect: the app introduction,
+    the feature promise, the optional controls you used, the generated walkthrough,
+    and the final takeaway. The tool validates the media so you know the MP4 is playable
+    before it goes into the hub.'
+  bullets:
+  - Product intro
+  - Feature promise
+  - Generated tour
+  - Validated output
+  animation: none

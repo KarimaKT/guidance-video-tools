@@ -24,9 +24,16 @@ dist/
 build/
 .eggs/
 
+# JavaScript
+node_modules/
+
 # Project outputs
 output/
 input/
+examples/ai_drafts/
+examples/physics_k1/
+examples/**/_staging/
+to-delete-review/
 
 # IDE
 .vscode/

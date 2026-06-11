@@ -1,0 +1,63 @@
+title: Evaluating Copilot Studio Agents - Part 3
+resolution: 1280x720
+fps: 30
+voice: en-US-JennyNeural
+voice_rate: +8%
+music_volume: 0
+scenes:
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_03/00-title.png
+  narration: Lesson three is the builder's workshop. You have a starter contract.
+    Now you need enough volume to tune, enough criteria to explain failures, and a
+    blind set so you do not accidentally train yourself to the answers.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_03/01-diagram-0.png
+  narration: 'Readiness needs more than a starter set. Generate or import enough cases
+    to see patterns: missing grounding, bad tool choice, weak formatting, brittle
+    instructions, or policy risk.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_03/01-diagram-1.png
+  narration: The working set is where the maker experiments. You change instructions,
+    knowledge descriptions, topic triggers, tool descriptions, or connector behavior,
+    then rerun the same rows to see what moved.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_03/01-diagram-2.png
+  narration: 'The blind set is the discipline. It has the same shape as the working
+    set, but you do not tune against it. It answers a different question: did the
+    agent learn the capability, or did the maker learn the test?'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_03/01-diagram-3.png
+  narration: The aha moment is the gap. Working set at 92 and blind at 64 is not a
+    success story. It is proof that your tuning was too narrow, your rubrics were
+    too permissive, or your examples taught a shortcut.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_03/01-diagram-4.png
+  narration: 'When the gap closes, readiness becomes a defensible conversation. Not
+    perfect, but understood: here is what improved, here is what still fails, and
+    here is the release risk we accept.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_03/02-text.png
+  narration: 'The article''s Eurozone example is the right mental model. The agent
+    may answer correctly but fail the maker''s UX expectation: no table, no chart,
+    no headers. A custom rubric turns that subjective frustration into inspectable
+    labels. Now the team can tune the prompt or tool output against a named failure.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_03/03-text.png
+  narration: This is the teaching moment most scorecard videos miss. Tuning is not
+    a magic ladder to 100 percent. It is a series of product choices. Evaluations
+    help you see which bucket benefited and which bucket paid the price, so readiness
+    becomes a decision instead of a vibe.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_03/98-closing.png
+  narration: If you are following along, this is what you are prepared to do now in
+    your project. You can expand your evaluation volume, split working and blind sets,
+    add a business-specific rubric, and explain readiness as a set of visible tradeoffs.
+  duration: 0

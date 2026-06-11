@@ -1,0 +1,8 @@
+flowchart LR
+  Analytics[Analytics sessions
+themes + outcomes + transcripts] --> Fetch[Fetch real questions
+into evaluation sets]
+  Fetch --> Metrics[Custom metrics / classifiers]
+  Metrics --> ROI[Savings
+per run or per tool]
+  Fetch -. new regression cases .-> Analytics

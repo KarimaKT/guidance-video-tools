@@ -1,0 +1,61 @@
+title: Evaluating Copilot Studio Agents - Part 4
+resolution: 1280x720
+fps: 30
+voice: en-US-JennyNeural
+voice_rate: +8%
+music_volume: 0
+scenes:
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_04/00-title.png
+  narration: Lesson four moves from the maker studio to real use. The agent is published.
+    Users phrase things differently, tools fail in new ways, and analytics becomes
+    the source of evaluation evidence.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_04/01-diagram-0.png
+  narration: 'Copilot Studio analytics is not just a dashboard for leaders. For makers,
+    it is a listening surface: outcomes, themes, generated answer quality, tool use,
+    knowledge source use, user feedback, and session details point to where the agent
+    is struggling.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_04/01-diagram-1.png
+  narration: 'The powerful move is to fetch real questions into evaluation. Now the
+    test set stops being hypothetical. It carries the way users actually ask, the
+    topics that cluster in themes, and the outcomes that matter: resolved, escalated,
+    abandoned, or unengaged.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_04/01-diagram-2.png
+  narration: Custom analytics metrics are the live twin of your custom evaluation
+    rubric. If V1 was gated on 'answer includes the chart and table the user asked
+    for,' the live classifier can watch production conversations for that same shape.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_04/01-diagram-3.png
+  narration: 'Then connect quality to value. The maker decision is what evidence deserves
+    operational attention: a baseline drop, a theme spike, a failed custom metric,
+    or a savings signal. The Savings calculator can estimate time or money saved per
+    run, or per tool for conversational agents, so the tradeoff is no longer quality
+    versus business value; it is which signal should drive the next build investment.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_04/02-text.png
+  narration: 'The article calls out a subtle feature: a global alert feels irrelevant
+    until you treat it as a baseline delta. It is not telling you what broke. It is
+    telling you when to look. The maker then drills into themes, outcomes, transcripts,
+    and test runs to locate the bucket that moved.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_04/03-text.png
+  narration: 'A maker-centered course has to say this plainly: analytics data types
+    matter. Conversational agents and event-triggered agents produce different sessions.
+    If you mix them into one generic quality story, you lose the causal trail. Match
+    the evaluation question to the session type.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_04/98-closing.png
+  narration: If you are following along, this is what you are prepared to do now in
+    your project. You can use live analytics as a source of new tests, track a custom
+    quality metric in production, and connect evaluation evidence to ROI or tool savings.
+  duration: 0

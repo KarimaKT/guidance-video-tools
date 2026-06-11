@@ -1,93 +1,73 @@
 # Demo Video: Meeting Sanitizer Feature Overview
 # ================================================
-# ~90 second explainer of the Meeting Sanitizer tool
-# Run: python creator/video_creator.py examples/sanitizer_demo.yaml sanitizer_demo.mp4
+# ~60 second explainer of the Meeting Sanitizer tool
+# Run: python creator/video_creator.py examples/sanitizer_demo.yaml examples/sanitizer_demo.mp4
 
-title: "Meeting Sanitizer — Clean Recordings Automatically"
+title: "Meeting Sanitizer — Publish-Ready Meeting Videos"
 resolution: "1920x1080"
 fps: 30
 voice: "en-US-AriaNeural"
 voice_rate: "+10%"
 
 scenes:
-  # ── Opening ──
   - title: "Meeting Sanitizer"
-    subtitle: "From messy recording to publish-ready video"
+    subtitle: "From messy meeting to publish-ready video"
     visual: slide
     background: "#0f0f23"
     accent_color: "#4fc3f7"
     narration: >
-      Meeting Sanitizer. Transform any Teams or Zoom recording into a
-      polished, professional video — automatically.
+      Meeting Sanitizer transforms a Teams or Zoom recording into a polished,
+      publish-ready video with a reviewable edit plan.
 
-  # ── What you provide ──
-  - title: "What You Provide"
+  - title: "What you provide"
     icon: "📦"
     bullets:
-      - "Your meeting recording (.mp4)"
-      - "The transcript file (.vtt)"
-      - "Which speakers to keep"
-      - "That's it. I handle everything else."
+      - "A recording"
+      - "A transcript"
+      - "Presenter names to keep"
+      - "Optional manual keep ranges"
     visual: slide
     background: "#1a1a2e"
     accent_color: "#81c784"
     narration: >
-      Here's what you need to give me. Your recording file, the transcript
-      that Teams auto-generates, and the names of speakers to keep. That's all.
-      I handle everything else.
+      Start with the recording, the transcript, and the presenter names to keep.
+      Add manual keep ranges when you want editorial control over the final cut.
 
-  # ── What I do ──
-  - title: "What I Do Automatically"
-    icon: "🤖"
+  - title: "What the app decides"
+    icon: "🛡"
     bullets:
-      - "Find and CUT all non-target speakers"
-      - "Detect admin chatter and cut it too"
-      - "Mask participant tiles in the video"
-      - "Enhance audio to broadcast quality"
+      - "Cut non-target speech"
+      - "Flag admin chatter"
+      - "Mask non-presenting participants"
+      - "Preserve presenter names"
     visual: slide
     background: "#1a1a2e"
     accent_color: "#f06292"
     narration: >
-      I analyze the transcript, find every disturbance — non-target speakers,
-      admin chatter like "am I muted?", even filler reactions. I cut them
-      completely, mask participant tiles, and normalize your audio.
+      The sanitizer analyzes the transcript, identifies disturbances, masks
+      non-presenting participants, and keeps presenter names when they should
+      remain visible.
 
-  # ── Smart detection ──
-  - title: "Smart Detection"
-    subtitle: "Not just the interruption — the reaction too"
+  - title: "Quality bar"
+    subtitle: "Complete thoughts. Clean cuts. Valid media."
     bullets:
-      - "Someone unmutes accidentally → CUT"
-      - "You say \"shall we mute you?\" → ALSO CUT"
-      - "\"Amazing. So anyway...\" → ALSO CUT"
-      - "Zero traces left behind"
+      - "Review every proposed cut"
+      - "Keep complete closing phrases"
+      - "Avoid accidental mid-sentence trims"
+      - "Validate output before publishing"
     visual: slide
     background: "#1a1a2e"
     accent_color: "#ba68c8"
     narration: >
-      The intelligence is in the detection. I don't just remove the interruption.
-      I catch your reaction to it too. "Shall we mute you?" gets cut. "Amazing,
-      so anyway" right after — also cut. No dead air, no awkward transitions.
+      The quality bar is not just removing interruptions. It is preserving
+      complete thoughts, avoiding mid-sentence trims, and validating the final
+      media before publishing.
 
-  # ── Workflow ──
-  - title: "Simple Workflow"
-    bullets:
-      - "1. Upload or point to your files"
-      - "2. Review the audit (see every planned cut)"
-      - "3. Click render — done"
-    visual: slide
-    background: "#0f0f23"
-    accent_color: "#ffb74d"
-    narration: >
-      The workflow is simple. Upload your files, review the audit report to see
-      exactly what gets cut, then render. You can tweak and re-run until
-      you're satisfied. Use the web UI or command line — your choice.
-
-  # ── Closing ──
-  - title: "Try It Now"
-    subtitle: "streamlit run app.py"
+  - title: "Publish with confidence"
+    subtitle: "Reviewable decisions. Validated output."
     visual: slide
     background: "#0f0f23"
     accent_color: "#81c784"
     narration: >
-      Install, upload, render. Professional meeting videos in minutes.
-      That's Meeting Sanitizer.
+      Reviewable decisions and validated output help you publish with
+      confidence. That's Meeting Sanitizer.

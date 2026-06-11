@@ -1,0 +1,61 @@
+title: Meeting Sanitizer - Review Before Render
+resolution: 1280x720
+fps: 30
+voice: en-US-GuyNeural
+voice_rate: +6%
+music_volume: 0
+scenes:
+- title: 'Introducing CAT Video Tools: Meeting Sanitizer'
+  subtitle: Upload a recording and transcript, review choices, then render safer video
+  icon: S
+  background: '#0f172a'
+  accent_color: '#38bdf8'
+  narration: 'Introducing CAT Video Tools: Meeting Sanitizer. We built this app for
+    preparing recorded meetings before they become reusable demos or clips. You upload
+    the recording and transcript, choose what to keep, review speaker and masking
+    decisions, and the app generates a safer, reviewable MP4.'
+  bullets:
+  - Upload recording
+  - Upload transcript
+  - Review cuts and speakers
+  - Generate safer MP4
+  animation: fade_in
+- title: Everything important is reviewable
+  subtitle: Cuts, speakers, masks, and title cards stay visible
+  icon: R
+  background: '#0f172a'
+  accent_color: '#38bdf8'
+  narration: 'Before rendering, the app shows the decisions that matter: keep ranges,
+    cut ranges, speaker names, title cards, end cards, and masking choices. Optional
+    manual overrides let you correct the plan before video is produced.'
+  bullets:
+  - Speaker names
+  - Keep and cut ranges
+  - Manual overrides
+  - Mask decisions
+- title: Protect people who are not part of the demo
+  subtitle: Preserve intended presenters and reduce unnecessary exposure
+  icon: P
+  background: '#3f1d2b'
+  accent_color: '#fb7185'
+  narration: 'The product is built for the practical privacy problem: keep the intended
+    presenters visible, remove irrelevant meeting sections, and mask non-presenters
+    when the recording would otherwise expose more than the demo needs.'
+  bullets:
+  - Keep presenters
+  - Remove admin chatter
+  - Mask non-presenters
+  animation: slide_up
+- title: Validate the output
+  subtitle: Clean audio, complete opening and ending
+  icon: V
+  background: '#14532d'
+  accent_color: '#86efac'
+  narration: The app generates the sanitized video, then validates the media streams.
+    Before sharing, you can inspect the opening, ending, audio, and rendered output
+    so the final file is useful instead of merely processed.
+  bullets:
+  - Complete first line
+  - Complete ending
+  - Clean audio
+  - Valid MP4

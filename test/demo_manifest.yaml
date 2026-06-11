@@ -1,0 +1,177 @@
+demos:
+- id: cat-video-tools-demo-creator-overview
+  title: Introducing Demo Video Creator
+  kind: creator
+  status: better demo - generated
+  created_video: true
+  production_status: final
+  featured: true
+  tool: Demo Video Creator
+  topic: Product demo creation
+  thumbnail: examples/better_demos/creator_decision_review_demo-contact-sheet.png
+  media: examples/better_demos/creator_decision_review_demo.mp4
+  config: examples/better_demos/creator_decision_review_demo.yaml
+  description: Viewer-facing overview of Demo Video Creator. It shows how a reviewed
+    script and silent raw walkthrough footage become a narrated, validated product
+    demo without exposing internal skill todos or arbitrary timing rules.
+  supporting_assets:
+  - examples/web_walkthroughs/cat-video-tools-portal-walkthrough-raw.mp4
+  - examples/web_walkthroughs/cat-video-tools-portal-walkthrough-raw.description.yaml
+  - examples/web_walkthroughs/cat-video-tools-portal-walkthrough-raw.walkthrough.yaml
+  tags:
+  - demo-video-creator
+  - better-demo
+  - app-overview
+  - web-walkthrough
+  - validated
+  - viewer-facing
+- id: work-hub-connect-focus-tour
+  title: 'Work Hub: Focus Mode and Connect Hub'
+  kind: guided product tour
+  status: better demo - generated
+  created_video: true
+  production_status: final
+  featured: true
+  tool: Work Hub
+  topic: Focus Mode and Connect evidence
+  thumbnail: examples/web_walkthroughs/work-hub/work-hub-connect-focus-tour-contact-sheet.png
+  media: examples/web_walkthroughs/work-hub/work-hub-connect-focus-tour.mp4
+  config: scripts/generate_work_hub_tour.py
+  description: Narrated tour of Work Hub with emphasis on Focus Mode for prioritized,
+    distraction-free execution with braindump capture, and Connect Hub for collating
+    and summarizing customer impact evidence.
+  tags:
+  - work-hub
+  - focus-mode
+  - connect-hub
+  - guided-tour
+  - prioritization
+  - impact-evidence
+- title: Introducing Meeting Sanitizer
+  kind: sanitizer
+  status: better demo - generated
+  created_video: true
+  production_status: draft
+  featured: false
+  tool: Meeting Sanitizer
+  topic: Privacy-safe meeting cleanup
+  media: examples/better_demos/sanitizer_review_first_demo.mp4
+  config: examples/better_demos/sanitizer_review_first_demo.yaml
+  description: 'See the review-first workflow for preparing meeting recordings: planned
+    cuts, speaker preservation, non-presenter masking, title/end cards, and output
+    validation.'
+  tags:
+  - sanitizer
+  - better-demo
+  - app-overview
+  - privacy
+  - review-first
+- title: Introducing Clip Extractor
+  kind: clip extraction
+  status: better demo - generated
+  created_video: true
+  production_status: draft
+  featured: false
+  tool: Clip Extractor
+  topic: Publishable clip extraction
+  media: examples/better_demos/clip_extractor_publishable_demo.mp4
+  config: examples/better_demos/clip_extractor_publishable_demo.yaml
+  description: Watch how a long recording becomes short, intentional clips with explicit
+    ranges, titles, clean re-encoding, normalized audio, and media validation.
+  tags:
+  - clip-extractor
+  - better-demo
+  - app-overview
+  - publishable
+  - validated
+- title: Introducing Technical Explainer Studio
+  kind: technical explainer
+  status: better demo - generated
+  created_video: true
+  production_status: final
+  featured: false
+  example: true
+  tool: Technical Explainer Studio
+  topic: Source-grounded technical teaching
+  media: examples/better_demos/technical_explainer_studio_demo.mp4
+  config: examples/better_demos/technical_explainer_studio_demo.yaml
+  description: See how the app turns a hard technical topic into a source-grounded
+    teaching plan using user framing, Learn docs, local assets, self-critique, and
+    an editable storyboard.
+  tags:
+  - technical-explainer
+  - better-demo
+  - app-overview
+  - advisory
+  - understanding
+- id: evaluation-learning-series-part-1
+  title: 'Standalone course video: Evaluating agents - Part 1: Start with value'
+  status: standalone learning series - evaluating agents (generated)
+  source: examples/learning_series/evaluating_agents/part_01.yaml
+  video: examples/learning_series/evaluating_agents/part_01_start_with_value.mp4
+  description: A maker's first evaluation job is deciding what V1 is allowed to be
+  tags:
+  - standalone-video
+  - follow-along
+  - learning-series
+  - copilot-studio
+  - evaluation
+  - mermaid-style
+  - KarimaKT
+- id: evaluation-learning-series-part-2
+  title: 'Standalone course video: Evaluating agents - Part 2: Starter test set'
+  status: standalone learning series - evaluating agents (generated)
+  source: examples/learning_series/evaluating_agents/part_02.yaml
+  video: examples/learning_series/evaluating_agents/part_02_starter_test_set.mp4
+  description: Turn stakeholder hopes into concrete rows a maker can design against
+  tags:
+  - standalone-video
+  - follow-along
+  - learning-series
+  - copilot-studio
+  - evaluation
+  - mermaid-style
+  - KarimaKT
+- id: evaluation-learning-series-part-3
+  title: 'Standalone course video: Evaluating agents - Part 3: Target readiness'
+  status: standalone learning series - evaluating agents (generated)
+  source: examples/learning_series/evaluating_agents/part_03.yaml
+  video: examples/learning_series/evaluating_agents/part_03_target_readiness.mp4
+  description: Use generated volume, rubrics, and blind sets to make tradeoffs visible
+  tags:
+  - standalone-video
+  - follow-along
+  - learning-series
+  - copilot-studio
+  - evaluation
+  - mermaid-style
+  - KarimaKT
+- id: evaluation-learning-series-part-4
+  title: 'Standalone course video: Evaluating agents - Part 4: Live analytics'
+  status: standalone learning series - evaluating agents (generated)
+  source: examples/learning_series/evaluating_agents/part_04.yaml
+  video: examples/learning_series/evaluating_agents/part_04_live_analytics.mp4
+  description: After launch, production sessions become the next test design surface
+  tags:
+  - standalone-video
+  - follow-along
+  - learning-series
+  - copilot-studio
+  - evaluation
+  - mermaid-style
+  - KarimaKT
+- id: evaluation-learning-series-part-5
+  title: 'Standalone course video: Evaluating agents - Part 5: Operationalize quality'
+  status: standalone learning series - evaluating agents (generated)
+  source: examples/learning_series/evaluating_agents/part_05.yaml
+  video: examples/learning_series/evaluating_agents/part_05_operationalize_quality.mp4
+  description: Choose single-turn or multi-turn tests, stack graders, and automate
+    only after the signal is trusted
+  tags:
+  - standalone-video
+  - follow-along
+  - learning-series
+  - copilot-studio
+  - evaluation
+  - mermaid-style
+  - KarimaKT

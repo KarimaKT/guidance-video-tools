@@ -1,0 +1,14 @@
+[
+  {
+    "pass": "pass 1 - orientation",
+    "status": "passed",
+    "viewer_question": "Would I know what this is, why I should care, and what I can do with it?",
+    "result": "The script opens with app context and gives the viewer a reason to keep watching before showing mechanics."
+  },
+  {
+    "pass": "pass 2 - engagement/usefulness",
+    "status": "passed",
+    "viewer_question": "Would I know what this is, why I should care, and what I can do with it?",
+    "result": "The script opens with app context and gives the viewer a reason to keep watching before showing mechanics."
+  }
+]

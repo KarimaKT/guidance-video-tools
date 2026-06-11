@@ -1,0 +1,60 @@
+title: Evaluating Copilot Studio Agents - Part 2
+resolution: 1280x720
+fps: 30
+voice: en-US-JennyNeural
+voice_rate: +8%
+music_volume: 0
+scenes:
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_02/00-title.png
+  narration: 'In lesson two, the maker creates the artifact that prevents scope creep:
+    the starter test set. It is not a giant QA spreadsheet. It is the contract for
+    what V1 means in Copilot Studio.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_02/01-diagram-0.png
+  narration: A starter set begins in plain business language. What do users expect
+    this agent to do on day one? If a scenario is not represented here, it is not
+    a hidden requirement for V1.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_02/01-diagram-1.png
+  narration: 'Copilot Studio gives you several ways to create cases: write them manually
+    with the business, convert useful test-chat turns, import a CSV, or generate cases
+    from knowledge and topics when you need coverage fast.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_02/01-diagram-2.png
+  narration: Now bucket the rows. The bucket controls effort. A Must-Pass row deserves
+    a carefully written expected answer or expected capability. A broader row may
+    need an AI quality or custom rubric. A guardrail may need keywords or a refusal
+    criterion.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_02/01-diagram-3.png
+  narration: The starter set becomes usable when each row has the right evidence attached.
+    You are not filling columns for administration; you are deciding what kind of
+    proof would convince you that the agent behaved well.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_02/02-text.png
+  narration: 'The common mistake is thinking every test row needs a perfect answer.
+    It does not. The maker tradeoff is precision versus effort. Expected answers are
+    valuable where they unlock a precise comparison. But for open-ended recommendations,
+    you often want an AI quality grader or a custom criterion that checks the shape
+    of a good response: grounded, complete, formatted, and useful.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_02/03-text.png
+  narration: 'This is a practical maker decision. Imported CSV rows are deliberate:
+    they carry stakeholder intent. Generated rows are exploratory: they show what
+    the platform can infer from your topics, tools, knowledge, and instructions. The
+    tradeoff is speed versus authority. Use both, but do not confuse discovery coverage
+    with the business contract.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_02/98-closing.png
+  narration: If you are following along, this is what you are prepared to do now in
+    your project. You can create a starter test set, bucket each row, and choose the
+    evidence type that fits the row instead of over-documenting everything.
+  duration: 0

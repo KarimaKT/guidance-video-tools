@@ -1,0 +1,72 @@
+title: Evaluating Copilot Studio Agents - Part 5
+resolution: 1280x720
+fps: 30
+voice: en-US-JennyNeural
+voice_rate: +8%
+music_volume: 0
+scenes:
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/00-title.png
+  narration: The final lesson turns the evaluation system into an operating habit.
+    You know the buckets, the data sources, and the methods. Now you make the system
+    repeatable without losing judgment.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/01-diagram-0.png
+  narration: Final evaluation design starts with what can break. Did the agent call
+    the right tool? Did it use the right topic? Did the answer mean the expected thing?
+    Did it satisfy the rubric? These are different questions.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/01-diagram-1.png
+  narration: 'Path graders catch what the agent did: capability use, expected tools,
+    expected topics, and sometimes keywords that must appear or must not appear. They
+    are especially useful for Must-Pass flows and tool-chain validation.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/01-diagram-2.png
+  narration: 'Answer graders catch how the agent responded: General quality, Compare
+    meaning, Text similarity, Exact match, or a custom rubric. Stack path and answer
+    checks on the same row when both matter.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/01-diagram-3.png
+  narration: The gate reads pass, fail, invalid, or error. Invalid often means your
+    row is missing the expected answer or keyword required by the chosen method. That
+    is not an agent bug; it is a test design bug.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/01-diagram-4.png
+  narration: Only then automate. Use the Power Platform REST API or the Microsoft
+    Copilot Studio connector actions to evaluate a test set, get run details, list
+    test sets, and publish results to a dashboard, email, or release gate.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/01-diagram-5.png
+  narration: The full picture is a quality gate, not a scorecard. One row can prove
+    the route, the answer, the policy behavior, and the automation signal you are
+    willing to trust.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/02-text.png
+  narration: 'Here is the aha moment: a single-turn evaluation is not shallow by default.
+    In a generative orchestrated agent, one question can trigger planning, knowledge
+    retrieval, tool execution, another tool, and response composition. The maker tradeoff
+    is focus versus realism. Multi-turn earns its place only when the previous turn
+    changes what the next answer should be.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/03-text.png
+  narration: 'The operational lesson is not glamorous, but it saves days. Before you
+    promise quality gates, confirm data policy allows the evaluation actions, pick
+    the right test identity for connected tools, and make sure the test sets themselves
+    are stable. The tradeoff is speed versus trust: automation amplifies good signals
+    and bad signals equally.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_05/98-closing.png
+  narration: If you are following along, this is what you are prepared to do now in
+    your project. You can design a quality gate for your Copilot Studio agent, choose
+    single-turn or multi-turn tests deliberately, stack the right graders, and automate
+    evaluations through connectors or the Power Platform API when the signal is trusted.
+  duration: 0

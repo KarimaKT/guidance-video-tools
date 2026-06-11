@@ -1,0 +1,59 @@
+title: Evaluating Copilot Studio Agents - Part 1
+resolution: 1280x720
+fps: 30
+voice: en-US-JennyNeural
+voice_rate: +8%
+music_volume: 0
+scenes:
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_01/00-title.png
+  narration: 'This first lesson reframes evaluation from a report card into a design
+    instrument. You are a Copilot Studio maker building an agent, and before you ask
+    whether it is good, you have to answer a sharper question: good at what, for whom,
+    and in which lifecycle moment?'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_01/01-diagram-0.png
+  narration: Here is the loop from the article, but seen through maker hands. Scope
+    is where you decide the value promise. If the agent is for employee onboarding,
+    V1 is not every HR question; it may be benefits enrollment, policy lookups, and
+    escalation safety.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_01/01-diagram-1.png
+  narration: 'Then you target the value. This is the build-and-tune stage: generated
+    cases, imported CSVs, expected answers where they matter, and graders that tell
+    you which kind of wrong you are seeing.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_01/01-diagram-2.png
+  narration: After launch, the agent is no longer living in your imagination. Analytics
+    sessions, themes, outcomes, tool use, custom metrics, and savings become the evidence
+    stream that tells you whether users are receiving the value you promised.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_01/01-diagram-3.png
+  narration: The aha moment is that delivery does not end the evaluation loop. Real
+    sessions become new cases, failed outcomes become new buckets, and the next version
+    starts with better evidence than the first.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_01/01-diagram-4.png
+  narration: So throughout this course, do not think of evaluations as a score page.
+    Think of them as the operating system for deciding scope, proving readiness, and
+    learning from production.
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_01/02-text.png
+  narration: 'This is where shallow evaluation goes wrong. A single pass rate compresses
+    risk, usefulness, and business value into one number. For a maker, the job is
+    to tag each case before the run. Then a 78 percent score becomes a map: which
+    promises are safe, which are merely rough, and which are unacceptable.'
+  duration: 0
+- visual: image
+  image: examples/learning_series/evaluating_agents/assets/part_01/98-closing.png
+  narration: If you are following along, this is what you are prepared to do now in
+    your project. You can write the value promise for your Copilot Studio agent, split
+    early scenarios into risk buckets, and stop treating an overall score as if it
+    were a release decision.
+  duration: 0

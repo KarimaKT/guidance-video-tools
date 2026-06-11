@@ -1,0 +1,98 @@
+{
+  "series": "Evaluating Copilot Studio Agents",
+  "rendered": false,
+  "outputs": [
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_01_start_with_value.mp4",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_02_starter_test_set.mp4",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_03_target_readiness.mp4",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_04_live_analytics.mp4",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_05_operationalize_quality.mp4"
+  ],
+  "manifest": "C://src//teams-meeting-sanitizer//test//demo_manifest.yaml",
+  "mermaid": [
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//01-maker-value-loop.mmd",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//02-starter-contract.mmd",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//03-working-blind-readiness.mmd",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//04-production-evidence-loop.mmd",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//05-quality-gate-automation.mmd"
+  ],
+  "scripts": [
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_01.yaml",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_02.yaml",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_03.yaml",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_04.yaml",
+    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_05.yaml"
+  ],
+  "script_reviews": {
+    "part_01.yaml": [
+      {
+        "pass": "pass 1 - learner orientation",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      },
+      {
+        "pass": "pass 2 - engagement/usefulness",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      }
+    ],
+    "part_02.yaml": [
+      {
+        "pass": "pass 1 - learner orientation",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      },
+      {
+        "pass": "pass 2 - engagement/usefulness",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      }
+    ],
+    "part_03.yaml": [
+      {
+        "pass": "pass 1 - learner orientation",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      },
+      {
+        "pass": "pass 2 - engagement/usefulness",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      }
+    ],
+    "part_04.yaml": [
+      {
+        "pass": "pass 1 - learner orientation",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      },
+      {
+        "pass": "pass 2 - engagement/usefulness",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      }
+    ],
+    "part_05.yaml": [
+      {
+        "pass": "pass 1 - learner orientation",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      },
+      {
+        "pass": "pass 2 - engagement/usefulness",
+        "status": "passed",
+        "viewer_question": "Would a maker understand why this matters, what to do differently, and how the product concepts fit the build lifecycle?",
+        "result": "The script teaches from the maker's perspective, preserves the evaluation lifecycle, and closes with a concrete project application."
+      }
+    ]
+  }
+}

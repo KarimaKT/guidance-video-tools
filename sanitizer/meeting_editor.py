@@ -25,7 +25,7 @@ Usage:
     editor = MeetingEditor(
         video_path="recording.mp4",
         vtt_path="transcript.vtt",
-        keep_speakers=["Karima Kanji-Tajdin", "Bobby Chang"],
+        keep_speakers=["Presenter One", "Presenter Two"],
     )
     editor.analyze()          # Parse transcript + detect layout + auto-split
     editor.audit()            # Print full edit plan
@@ -40,6 +40,8 @@ import shutil
 import uuid
 from pathlib import Path
 from dataclasses import dataclass, field
+
+from media_pipeline import MediaPipelineError, concat_videos, render_segment, validate_media
 
 try:
     import numpy as np
@@ -142,12 +144,12 @@ def _fmt(sec: float) -> str:
 
 def detect_layout(video_path: str, sample_time: float = None) -> LayoutProfile:
     """Detect the Teams recording layout by analyzing a frame.
-    
+
     Returns a LayoutProfile with panel position, tile boundaries, etc.
     """
     if not HAS_PIL:
         raise ImportError("PIL/numpy required for layout detection. pip install Pillow numpy")
-    
+
     # Get video dimensions
     info = _ffprobe(video_path)
     width = height = 0
@@ -160,14 +162,14 @@ def detect_layout(video_path: str, sample_time: float = None) -> LayoutProfile:
 
     if sample_time is None:
         sample_time = min(300, duration * 0.1)  # 5 min in, or 10% of video
-    
+
     # Extract frame
     frame_path = _extract_frame(video_path, sample_time)
     img = np.array(Image.open(frame_path))
     os.unlink(frame_path)
 
     layout = LayoutProfile(width=width, height=height)
-    
+
     # Find panel boundary: scan columns from right looking for brightness drop
     # Teams slides area is bright (white/light background), panel is dark
     margin = int(width * 0.6)  # panel is always in the right 40%
@@ -185,14 +187,14 @@ def detect_layout(video_path: str, sample_time: float = None) -> LayoutProfile:
             if left > 150 and right < 50:
                 layout.panel_x = x
                 break
-    
+
     layout.panel_width = width - layout.panel_x
-    
+
     # Find tile positions within the panel
     if layout.panel_x > 0:
         panel_strip = img[:, layout.panel_x:, :]
         row_brightness = panel_strip.mean(axis=(1, 2))
-        
+
         # Find bright bands (camera tiles) vs dark bands (gaps)
         threshold = 40
         in_tile = False
@@ -209,9 +211,9 @@ def detect_layout(video_path: str, sample_time: float = None) -> LayoutProfile:
                 in_tile = False
         if in_tile and height - tile_start > 20:
             tiles.append((tile_start, height))
-        
+
         layout.tile_regions = tiles
-    
+
     # Detect speaker name bar (bottom-left, usually last 40px of frame)
     bottom_strip = img[height-40:, :int(width*0.3), :]
     for y_offset in range(40):
@@ -225,7 +227,7 @@ def detect_layout(video_path: str, sample_time: float = None) -> LayoutProfile:
                     bar_w = x
             layout.name_bar = Rect(0, bar_y, min(bar_w + 20, int(width * 0.3)), height - bar_y, "speaker_name")
             break
-    
+
     return layout
 
 
@@ -253,7 +255,7 @@ def _extract_frame(video_path: str, time_sec: float) -> str:
 
 class MeetingEditor:
     """Professional meeting video editor.
-    
+
     Args:
         video_path:    Path to the source recording
         vtt_path:      Path to the VTT transcript
@@ -266,13 +268,17 @@ class MeetingEditor:
 
     def __init__(self, video_path: str, vtt_path: str, keep_speakers: list[str],
                  segments: list[tuple[float, float]] = None,
-                 layout_overrides: dict = None):
+                 layout_overrides: dict = None,
+                 conversation_aware_masking: bool = True,
+                 preserve_presenter_names: bool = True):
         self.video_path = video_path
         self.vtt_path = vtt_path
         self.keep_speakers = set(keep_speakers)
         self.segments = segments
         self.layout_overrides = layout_overrides or {}
-        
+        self.conversation_aware_masking = conversation_aware_masking
+        self.preserve_presenter_names = preserve_presenter_names
+
         # Populated by analyze()
         self.vtt_entries: list[VTTEntry] = []
         self.all_speakers: dict[str, float] = {}
@@ -283,7 +289,7 @@ class MeetingEditor:
         self.visual_masks: list[Rect] = []
         self.clean_segments: list[tuple[float, float]] = []  # final segments after auto-split
         self._analyzed = False
-    
+
     # ── Step 1: Analyze ───────────────────────────────────────────────
 
     def analyze(self, detect_visual_layout: bool = True):
@@ -291,21 +297,21 @@ class MeetingEditor:
         print("=" * 60)
         print("ANALYZING MEETING RECORDING")
         print("=" * 60)
-        
+
         # Parse transcript
         self.vtt_entries = parse_vtt(self.vtt_path)
         print(f"  Transcript: {len(self.vtt_entries)} entries parsed")
-        
+
         # Speaker summary
         self.all_speakers = {}
         for e in self.vtt_entries:
             self.all_speakers[e.speaker] = self.all_speakers.get(e.speaker, 0) + (e.end - e.start)
-        
+
         print(f"  Speakers found: {len(self.all_speakers)}")
         for name, dur in sorted(self.all_speakers.items(), key=lambda x: -x[1]):
             tag = " [KEEP]" if name in self.keep_speakers else " [REMOVE]"
             print(f"    {name:<35} {dur/60:.1f} min{tag}")
-        
+
         # Detect layout
         if detect_visual_layout and HAS_PIL:
             print(f"\n  Detecting video layout...")
@@ -319,19 +325,19 @@ class MeetingEditor:
             if self.layout.name_bar:
                 nb = self.layout.name_bar
                 print(f"    Name bar:    x={nb.x} y={nb.y} w={nb.w} h={nb.h}")
-        
+
         # Use segments or full video
         if self.segments is None:
             info = _ffprobe(self.video_path)
             dur = float(info.get("format", {}).get("duration", 0))
             self.segments = [(0, dur)]
-        
+
         # Find all issues, build disturbance zones, auto-split segments
         self._find_disturbances()
         self._find_content_issues()
         self._auto_split_segments()
         self._build_visual_masks()
-        
+
         self._analyzed = True
         print(f"\n  Analysis complete:")
         print(f"    {len(self.disturbances)} disturbance zones to CUT")
@@ -342,14 +348,14 @@ class MeetingEditor:
 
     def _find_disturbances(self):
         """Find disturbance zones: non-target speech + surrounding admin reactions.
-        
+
         A disturbance zone includes:
         1. All contiguous non-target speaker entries
         2. Any kept-speaker entries that are REACTIONS to the disturbance:
            - Admin language: "mute", "unmute", "can you hear", "shall we", etc.
            - Filler reactions: "All right", "OK", "Amazing" right after disturbance
         3. A buffer to catch the transition back to clean content
-        
+
         Short bleeds (<1s of non-target audio with no admin reaction) become
         mute ranges instead of cuts.
         """
@@ -361,12 +367,12 @@ class MeetingEditor:
             'amazing', 'all right', 'alright', 'ok so', 'okay so',
             'anyway', 'moving on', 'where were we', 'so anyway',
         ]
-        
+
         for seg_i, (seg_start, seg_end) in enumerate(self.segments):
             # Get all entries in this segment
             seg_entries = [e for e in self.vtt_entries
                           if e.start >= seg_start and e.start < seg_end]
-            
+
             # Find clusters of non-target speech
             i = 0
             while i < len(seg_entries):
@@ -374,21 +380,21 @@ class MeetingEditor:
                 if e.speaker in self.keep_speakers:
                     i += 1
                     continue
-                
+
                 # Found non-target speech — build the disturbance zone
                 zone_entries = [e]
                 zone_start = e.start
                 zone_end = e.end
-                
+
                 # Expand forward: include adjacent non-target + admin reactions
                 j = i + 1
                 while j < len(seg_entries):
                     next_e = seg_entries[j]
                     gap = next_e.start - zone_end
-                    
+
                     if gap > 5.0:
                         break  # too far apart, separate disturbance
-                    
+
                     if next_e.speaker not in self.keep_speakers:
                         # More non-target speech
                         zone_entries.append(next_e)
@@ -401,7 +407,7 @@ class MeetingEditor:
                         j += 1
                     else:
                         break  # clean content resumes
-                    
+
                 # Expand backward: check if kept speaker's lead-in is admin
                 k = i - 1
                 while k >= 0:
@@ -416,14 +422,14 @@ class MeetingEditor:
                         k -= 1
                     else:
                         break
-                
+
                 # Determine: CUT or MUTE?
                 non_target_duration = sum(
                     ze.end - ze.start for ze in zone_entries
                     if ze.speaker not in self.keep_speakers
                 )
                 total_zone_duration = zone_end - zone_start
-                
+
                 if non_target_duration < 0.8 and total_zone_duration < 1.5:
                     # Very brief bleed — mute instead of cut
                     for ze in zone_entries:
@@ -461,7 +467,7 @@ class MeetingEditor:
                             description=f"[{ze.speaker}]: \"{ze.text[:60]}\"",
                             action=action_desc
                         ))
-                
+
                 i = j  # skip past the zone
 
     def _is_admin_reaction(self, entry: VTTEntry, admin_pats: list, reaction_pats: list) -> bool:
@@ -478,38 +484,38 @@ class MeetingEditor:
 
     def _auto_split_segments(self):
         """Split user-provided segments around disturbance zones.
-        
+
         Input: self.segments (rough time ranges to keep)
         Output: self.clean_segments (refined ranges with disturbances excised)
-        
+
         Uses speech-boundary snapping to avoid cutting mid-syllable:
         - End cuts get +0.15s padding (let trailing speech finish)
         - Resume points get -0.1s pre-roll (catch speech onset)
-        
+
         Also adjusts layout_overrides indices to match new segment numbering.
         """
         if not self.disturbances:
             self.clean_segments = list(self.segments)
             return
-        
+
         new_segments = []
         old_to_new = {}  # map old segment index to new indices
-        
+
         for seg_i, (seg_start, seg_end) in enumerate(self.segments):
             # Find disturbances within this segment
             seg_disturbances = [
                 d for d in self.disturbances
                 if d.start >= seg_start and d.end <= seg_end
             ]
-            
+
             if not seg_disturbances:
                 old_to_new[seg_i] = [len(new_segments)]
                 new_segments.append((seg_start, seg_end))
                 continue
-            
+
             # Sort by start time
             seg_disturbances.sort(key=lambda d: d.start)
-            
+
             # Split around each disturbance
             cursor = seg_start
             new_indices = []
@@ -520,7 +526,7 @@ class MeetingEditor:
                 if cut_point - cursor > 1.0:
                     new_indices.append(len(new_segments))
                     new_segments.append((cursor, cut_point))
-                
+
                 # Find clean resume point after disturbance
                 # Look for the next kept-speaker entry that's real content
                 resume = d.end
@@ -533,17 +539,17 @@ class MeetingEditor:
                         else:
                             resume = e.start
                             break
-                
+
                 # Snap resume: small pre-roll to catch speech onset
                 cursor = self._snap_to_silence(resume, direction="after")
-            
+
             # Add remaining clean portion
             if seg_end - cursor > 1.0:
                 new_indices.append(len(new_segments))
                 new_segments.append((cursor, seg_end))
-            
+
             old_to_new[seg_i] = new_indices
-        
+
         # Remap layout_overrides to new segment indices
         new_overrides = {}
         for old_i, rects in self.layout_overrides.items():
@@ -551,37 +557,37 @@ class MeetingEditor:
                 for new_i in old_to_new[old_i]:
                     new_overrides[new_i] = rects
         self.layout_overrides = new_overrides
-        
+
         self.clean_segments = new_segments
-        
+
         if len(new_segments) != len(self.segments):
             removed_time = sum(d.end - d.start for d in self.disturbances)
             print(f"\n  Auto-split: {len(self.segments)} segments → "
                   f"{len(new_segments)} (cut {removed_time:.1f}s of disturbances)")
-        
+
         # Log cut-point context for verification
         self._log_cut_boundaries()
 
     def _snap_to_silence(self, timestamp: float, direction: str = "before") -> float:
         """Snap a cut point to the nearest real audio silence + sentence boundary.
-        
+
         Uses FFmpeg silencedetect to find actual silence gaps in the waveform,
         then cross-references VTT text to prefer cuts at sentence/clause endings.
-        
+
         direction="before": find a safe end-point just before timestamp
         direction="after": find a safe start-point just after timestamp
         """
         # Step 1: Find real silence gaps in a ±3s window around the timestamp
         silence_gaps = self._detect_silence_near(timestamp, window=3.0)
-        
+
         # Step 2: Find sentence-boundary candidates from VTT
         sentence_points = self._find_sentence_boundaries(timestamp, direction, window=3.0)
-        
+
         if direction == "before":
             # We want a point <= timestamp where audio is silent AND a sentence just ended
             best = timestamp
             best_score = -1
-            
+
             for gap_start, gap_end in silence_gaps:
                 if gap_end > timestamp:
                     continue
@@ -589,7 +595,7 @@ class MeetingEditor:
                 candidate = (gap_start + gap_end) / 2
                 if candidate > timestamp or candidate < timestamp - 3.0:
                     continue
-                
+
                 # Score: prefer silence that coincides with a sentence boundary
                 score = 1  # base: it's a real silence
                 for sp in sentence_points:
@@ -597,11 +603,11 @@ class MeetingEditor:
                         score += 3  # strong match
                     elif abs(sp - gap_start) < 1.0:
                         score += 1
-                
+
                 if score > best_score:
                     best_score = score
                     best = candidate
-            
+
             # Fallback: if no silence found, use VTT-based snapping
             if best_score < 0:
                 for e in self.vtt_entries:
@@ -610,11 +616,11 @@ class MeetingEditor:
                         if candidate <= timestamp:
                             best = candidate
             return best
-        
+
         else:  # direction == "after"
             best = timestamp
             best_score = -1
-            
+
             for gap_start, gap_end in silence_gaps:
                 if gap_start < timestamp - 1.0:
                     continue
@@ -622,18 +628,18 @@ class MeetingEditor:
                 candidate = gap_end - 0.05  # tiny pre-roll
                 if candidate < timestamp - 1.0 or candidate > timestamp + 3.0:
                     continue
-                
+
                 score = 1
                 for sp in sentence_points:
                     if abs(sp - gap_end) < 0.5:
                         score += 3
                     elif abs(sp - gap_end) < 1.0:
                         score += 1
-                
+
                 if score > best_score:
                     best_score = score
                     best = candidate
-            
+
             # Fallback
             if best_score < 0:
                 best = max(0, timestamp - 0.1)
@@ -641,12 +647,12 @@ class MeetingEditor:
 
     def _detect_silence_near(self, timestamp: float, window: float = 3.0) -> list[tuple[float, float]]:
         """Use FFmpeg silencedetect to find actual audio silence gaps near a timestamp.
-        
+
         Returns list of (silence_start, silence_end) tuples.
         """
         start = max(0, timestamp - window)
         duration = window * 2
-        
+
         cmd = [
             "ffmpeg", "-y",
             "-ss", str(start), "-t", str(duration),
@@ -654,10 +660,10 @@ class MeetingEditor:
             "-af", "silencedetect=noise=-35dB:d=0.15",
             "-f", "null", "-"
         ]
-        
+
         r = subprocess.run(cmd, capture_output=True, text=True)
         stderr = r.stderr
-        
+
         gaps = []
         silence_start = None
         for line in stderr.split('\n'):
@@ -671,22 +677,22 @@ class MeetingEditor:
                     silence_end = float(m.group(1)) + start
                     gaps.append((silence_start, silence_end))
                     silence_start = None
-        
+
         return gaps
 
     def _find_sentence_boundaries(self, timestamp: float, direction: str, window: float = 3.0) -> list[float]:
         """Find timestamps where VTT text ends at a sentence/clause boundary.
-        
+
         Looks for entries whose text ends with sentence-ending punctuation
         (period, question mark, exclamation) or strong clause breaks.
         """
         import re as _re
         boundaries = []
-        
+
         for e in self.vtt_entries:
             if e.speaker not in self.keep_speakers:
                 continue
-            
+
             # Check entries near the timestamp
             if direction == "before":
                 if e.end < timestamp - window or e.end > timestamp:
@@ -694,7 +700,7 @@ class MeetingEditor:
             else:
                 if e.start < timestamp - 1.0 or e.start > timestamp + window:
                     continue
-            
+
             text = e.text.strip()
             # Sentence-ending punctuation
             if _re.search(r'[.!?][\s"\']*$', text):
@@ -702,22 +708,22 @@ class MeetingEditor:
             # Strong clause breaks (comma + conjunction patterns, semicolons)
             elif _re.search(r'[,;]\s*$', text):
                 boundaries.append(e.end if direction == "before" else e.start)
-        
+
         return boundaries
 
     def _log_cut_boundaries(self):
         """Log what VTT text appears at each segment boundary for verification.
-        
+
         This ensures no cut happens mid-sentence or mid-thought.
         """
         if len(self.clean_segments) <= 1:
             return
-        
+
         print(f"\n  ── Cut-point verification ──")
         for i in range(len(self.clean_segments) - 1):
             seg_end = self.clean_segments[i][1]
             next_start = self.clean_segments[i + 1][0]
-            
+
             # Find the VTT entry that's speaking at seg_end (last words before cut)
             last_text = ""
             last_speaker = ""
@@ -725,7 +731,7 @@ class MeetingEditor:
                 if e.end <= seg_end + 0.3 and e.end >= seg_end - 1.5 and e.speaker in self.keep_speakers:
                     last_text = e.text.strip().replace('\n', ' ')
                     last_speaker = e.speaker.split()[0]
-            
+
             # Find the VTT entry starting after resume (first words after cut)
             first_text = ""
             first_speaker = ""
@@ -734,11 +740,11 @@ class MeetingEditor:
                     first_text = e.text.strip().replace('\n', ' ')
                     first_speaker = e.speaker.split()[0]
                     break
-            
+
             # Check quality
             ends_clean = bool(re.search(r'[.!?;,]\s*$', last_text)) if last_text else False
             marker = "✓" if ends_clean else "⚠"
-            
+
             gap = next_start - seg_end
             print(f"  {marker} Cut {i+1}: {_fmt(seg_end)} → {_fmt(next_start)} (gap {gap:.1f}s)")
             if last_text:
@@ -750,10 +756,10 @@ class MeetingEditor:
 
     def _find_content_issues(self):
         """Find standalone admin mentions, hesitations, and gaps.
-        
+
         Note: admin reactions that are PART of a disturbance zone are already
         handled by _find_disturbances(). This catches standalone admin talk
-        from kept speakers (e.g. "Hey Karima, I think you're muted" from Bobby
+        from kept speakers (e.g. "I think you're muted" from another presenter
         when there's no adjacent non-target speech).
         """
         standalone_admin_patterns = [
@@ -763,13 +769,13 @@ class MeetingEditor:
             'drop this image into the chat', 'questions in the chat',
         ]
         filler_words = {'uh', 'um', 'umm', 'uhh', 'ah', 'hmm', 'uh-huh', 'mhm'}
-        
+
         # Which source times are already covered by disturbances?
         disturbed_times = set()
         for d in self.disturbances:
             for e in d.entries:
                 disturbed_times.add(e.start)
-        
+
         for seg_i, (seg_start, seg_end) in enumerate(self.segments):
             prev_end = seg_start
             for e in self.vtt_entries:
@@ -777,7 +783,7 @@ class MeetingEditor:
                     continue
                 if e.start in disturbed_times:
                     continue  # already handled
-                
+
                 # Standalone admin mentions from kept speakers
                 if e.speaker in self.keep_speakers:
                     lower = e.text.lower()
@@ -797,7 +803,7 @@ class MeetingEditor:
                                 action="CUT"
                             ))
                             break
-                
+
                 # Hesitations at segment boundaries (first/last 3 seconds)
                 if e.speaker in self.keep_speakers:
                     in_first_3 = (e.start - seg_start) < 3
@@ -813,7 +819,7 @@ class MeetingEditor:
                                 description=f"Filler at segment {loc}: \"{e.text[:60]}\"",
                                 action="FLAG"
                             ))
-                
+
                 # Long gaps
                 gap = e.start - prev_end
                 if gap > 3.0:
@@ -829,13 +835,33 @@ class MeetingEditor:
         """Build visual mask rectangles from layout analysis."""
         if not self.layout or not self.layout.tile_regions:
             return
-        
+
+        if self.conversation_aware_masking and self.clean_segments:
+            self.layout_overrides = {
+                i: self._masks_for_segment(s, e)
+                for i, (s, e) in enumerate(self.clean_segments)
+            }
+            return
+        self.visual_masks = self._masks_for_keep_count(len(self.keep_speakers))
+
+    def _masks_for_segment(self, seg_start: float, seg_end: float) -> list[Rect]:
+        """Use dialogue density to decide whether to keep one or multiple presenter tiles."""
+        active_presenters = {
+            e.speaker for e in self.vtt_entries
+            if e.speaker in self.keep_speakers and e.start < seg_end and e.end > seg_start
+        }
+        keep_count = max(1, min(len(active_presenters), len(self.keep_speakers)))
+        return self._masks_for_keep_count(keep_count)
+
+    def _masks_for_keep_count(self, keep_count: int) -> list[Rect]:
+        masks: list[Rect] = []
+
         # Determine which tiles belong to kept speakers vs others
         # Heuristic: first N tiles (from top) correspond to kept speakers,
         # remaining tiles are other participants to mask
-        n_keep = len(self.keep_speakers)
+        n_keep = max(1, keep_count)
         tiles = self.layout.tile_regions
-        
+
         if len(tiles) > n_keep:
             # Tiles might have name labels between them, so we look for groups
             # Keep the first n_keep substantial tiles (>50px tall), mask the rest
@@ -849,19 +875,19 @@ class MeetingEditor:
                     # Everything after this tile gets masked
                     mask_start_y = y2
                     break
-            
+
             if mask_start_y > 0:
-                self.visual_masks.append(Rect(
+                masks.append(Rect(
                     x=self.layout.panel_x,
                     y=mask_start_y,
                     w=self.layout.panel_width,
                     h=self.layout.height - mask_start_y,
                     label="non-target participants"
                 ))
-        
-        # Always mask the speaker name bar if detected
-        if self.layout.name_bar:
-            self.visual_masks.append(self.layout.name_bar)
+
+        if self.layout.name_bar and not self.preserve_presenter_names:
+            masks.append(self.layout.name_bar)
+        return masks
 
     # ── Step 2: Audit ─────────────────────────────────────────────────
 
@@ -869,11 +895,11 @@ class MeetingEditor:
         """Print a complete audit report. Returns True if disturbances were found."""
         if not self._analyzed:
             self.analyze()
-        
+
         print("\n" + "=" * 60)
         print("EDIT PLAN AUDIT REPORT")
         print("=" * 60)
-        
+
         # Disturbances found and cut
         if self.disturbances:
             print(f"\n── DISTURBANCE ZONES CUT ({len(self.disturbances)}) ──")
@@ -886,7 +912,7 @@ class MeetingEditor:
                     tag = "  [ADMIN REACTION]" if e.speaker in self.keep_speakers else ""
                     print(f"       [{e.speaker}]: \"{e.text[:65]}\"{tag}")
             print(f"  Total cut: {total_cut:.1f}s")
-        
+
         # Clean segments (after auto-split)
         print(f"\n── CLEAN SEGMENTS ({len(self.clean_segments)}) ──")
         total_dur = 0
@@ -898,7 +924,7 @@ class MeetingEditor:
                 mask_note = " [CUSTOM LAYOUT]"
             print(f"  {i+1}. {_fmt(s)} → {_fmt(e)} ({dur:.0f}s){mask_note}")
         print(f"  Total output: {_fmt(total_dur)} ({total_dur/60:.1f} min)")
-        
+
         # Visual masks
         print(f"\n── VISUAL MASKS ({len(self.visual_masks)}) ──")
         for r in self.visual_masks:
@@ -914,14 +940,14 @@ class MeetingEditor:
             for mr in self.mute_ranges:
                 print(f"  MUTE {_fmt(mr.start)} → {_fmt(mr.end)} "
                       f"({mr.end-mr.start:.1f}s) [{mr.speaker}]: \"{mr.text[:50]}\"")
-        
+
         # Remaining flags
         flags = [i for i in self.issues if i.action == "FLAG"]
         if flags:
             print(f"\n── FLAGGED FOR REVIEW ({len(flags)}) ──")
             for issue in flags:
                 print(f"  [{issue.severity}] {_fmt(issue.time_src)}: {issue.description}")
-        
+
         # Summary
         n_cut = sum(1 for i in self.issues if 'CUT' in i.action)
         n_mute = sum(1 for i in self.issues if i.action == 'MUTE')
@@ -930,8 +956,28 @@ class MeetingEditor:
         print(f"  Actions: {n_cut} CUT, {n_mute} MUTE, {n_flag} flagged")
         print(f"  Output: {len(self.clean_segments)} segments, {total_dur/60:.1f} min")
         print("=" * 60)
-        
+
         return len(self.disturbances) > 0
+
+    def planned_transcript(self) -> list[VTTEntry]:
+        """Return transcript entries expected to remain after the clean segment plan."""
+        if not self._analyzed:
+            self.analyze()
+
+        kept_entries = []
+        for seg_start, seg_end in self.clean_segments:
+            for entry in self.vtt_entries:
+                if entry.speaker not in self.keep_speakers:
+                    continue
+                if entry.start >= seg_start and entry.end <= seg_end:
+                    kept_entries.append(entry)
+        return kept_entries
+
+    def planned_transcript_text(self, max_entries: int = 120) -> str:
+        lines = []
+        for entry in self.planned_transcript()[:max_entries]:
+            lines.append(f"{_fmt(entry.start)} - {_fmt(entry.end)} | {entry.speaker}: {entry.text}")
+        return "\n".join(lines)
 
     def _merge_mute_ranges(self) -> list[dict]:
         """Merge overlapping/adjacent mute ranges."""
@@ -966,33 +1012,33 @@ class MeetingEditor:
 
     def process(self, output_path: str, crf: int = 22, audio_enhance: bool = True):
         """Render the final edited video.
-        
+
         Uses clean_segments (auto-split around disturbances).
         Only applies muting for sub-second bleeds that couldn't be cut.
         """
         if not self._analyzed:
             self.analyze()
-        
+
         segments = self.clean_segments
         out_dir = Path(output_path).parent
         # Use unique temp dir to avoid collisions with parallel runs
         temp_dir = out_dir / f"_edit_temp_{uuid.uuid4().hex[:8]}"
         temp_dir.mkdir(parents=True, exist_ok=True)
-        
+
         print("\n" + "=" * 60)
         print("PROCESSING VIDEO")
         print("=" * 60)
-        
+
         # Build merged mute ranges (only sub-second bleeds remain)
         merged_mutes = self._merge_mute_ranges() if self.mute_ranges else []
-        
+
         temp_files = []
         for i, (seg_start, seg_end) in enumerate(segments):
             tmp = str(temp_dir / f"seg_{i:02d}.mp4")
             dur = seg_end - seg_start
             print(f"\n  Segment {i+1}/{len(segments)}: "
                   f"{_fmt(seg_start)} → {_fmt(seg_end)} ({dur:.0f}s)")
-            
+
             # Video filters: masks
             vf_parts = []
             if i in self.layout_overrides:
@@ -1001,10 +1047,10 @@ class MeetingEditor:
             else:
                 for r in self.visual_masks:
                     vf_parts.append(r.as_drawbox())
-            
+
             # Audio filters: mute non-target speakers + enhancement
             af_parts = []
-            
+
             # Mute ranges that fall within this segment (using segment-local time)
             for mr in merged_mutes:
                 # Check overlap with this segment
@@ -1019,69 +1065,54 @@ class MeetingEditor:
                     )
                     print(f"    Muting: {_fmt(mute_start)} → {_fmt(mute_end)} "
                           f"(local {local_start:.1f}-{local_end:.1f}s)")
-            
+
             # Audio enhancement
             if audio_enhance:
                 af_parts.append("highpass=f=80")
                 af_parts.append("afftdn=nf=-20")
                 af_parts.append("loudnorm=I=-14:TP=-1:LRA=11")
-            
-            # Build FFmpeg command — use output seeking for frame-accurate cuts
-            # (input seeking with -ss before -i jumps to nearest keyframe, clipping syllables)
-            cmd = [
-                "ffmpeg", "-y",
-                "-i", self.video_path,
-                "-ss", str(seg_start), "-to", str(seg_end),
-            ]
-            if vf_parts:
-                cmd += ["-vf", ",".join(vf_parts)]
-            if af_parts:
-                cmd += ["-af", ",".join(af_parts)]
-            cmd += [
-                "-c:v", "libx264", "-crf", str(crf), "-preset", "medium",
-                "-c:a", "aac", "-b:a", "192k",
-                tmp
-            ]
-            
-            r = subprocess.run(cmd, capture_output=True, text=True)
-            if r.returncode != 0:
-                print(f"    ERROR: {r.stderr[-300:]}")
+
+            try:
+                summary = render_segment(
+                    input_path=self.video_path,
+                    output_path=tmp,
+                    start=seg_start,
+                    end=seg_end,
+                    video_filters=vf_parts,
+                    audio_filters=af_parts,
+                    crf=crf,
+                )
+                size = os.path.getsize(tmp) / 1024 / 1024
+                print(
+                    f"    ✓ Encoded ({size:.1f} MB, "
+                    f"{summary['duration']:.1f}s, a:{summary['audio_codec']} v:{summary['video_codec']})"
+                )
+                temp_files.append(tmp)
+            except MediaPipelineError as e:
+                print(f"    ERROR: {e}")
                 continue
-            
-            size = os.path.getsize(tmp) / 1024 / 1024
-            print(f"    ✓ Encoded ({size:.1f} MB)")
-            temp_files.append(tmp)
-        
+
         if not temp_files:
             print("  No segments processed!")
             shutil.rmtree(str(temp_dir), ignore_errors=True)
             return None
-        
+
         # Concatenate
         if len(temp_files) == 1:
             shutil.move(temp_files[0], output_path)
+            validate_media(output_path)
         else:
-            list_file = str(temp_dir / "concat.txt")
-            with open(list_file, "w") as f:
-                for tf in temp_files:
-                    # Use forward slashes for FFmpeg compatibility on Windows
-                    fpath = str(Path(tf).resolve()).replace("\\", "/")
-                    f.write(f"file '{fpath}'\n")
-            
             print(f"\n  Concatenating {len(temp_files)} segments...")
-            cmd = [
-                "ffmpeg", "-y", "-f", "concat", "-safe", "0",
-                "-i", list_file, "-c", "copy", output_path
-            ]
-            r = subprocess.run(cmd, capture_output=True, text=True)
-            if r.returncode != 0:
-                print(f"  Concat error: {r.stderr[-300:]}")
+            try:
+                concat_videos(temp_files, output_path, crf=crf)
+            except MediaPipelineError as e:
+                print(f"  Concat error: {e}")
                 shutil.rmtree(str(temp_dir), ignore_errors=True)
                 return None
-        
+
         # Cleanup
         shutil.rmtree(str(temp_dir), ignore_errors=True)
-        
+
         size = os.path.getsize(output_path) / 1024 / 1024
         print(f"\n  ✅ DONE: {output_path} ({size:.0f} MB)")
         return output_path
@@ -1092,22 +1123,22 @@ class MeetingEditor:
         """Extract a frame with masks applied for visual verification."""
         if output_path is None:
             output_path = str(Path(self.video_path).parent / f"_verify_{int(source_time)}s.png")
-        
+
         # Determine which segment this time falls in
         seg_i = None
         for i, (s, e) in enumerate(self.segments):
             if s <= source_time <= e:
                 seg_i = i
                 break
-        
+
         # Get masks for this segment
         if seg_i is not None and seg_i in self.layout_overrides:
             masks = self.layout_overrides[seg_i]
         else:
             masks = self.visual_masks
-        
+
         vf = ",".join(r.as_drawbox() for r in masks) if masks else "null"
-        
+
         cmd = [
             "ffmpeg", "-y", "-ss", str(source_time), "-i", self.video_path,
             "-frames:v", "1", "-update", "1", "-vf", vf, output_path
@@ -1132,15 +1163,15 @@ if __name__ == "__main__":
     if len(sys.argv) < 4:
         print("Usage: python meeting_editor.py <video> <vtt> <speaker1> [speaker2] ...")
         print("\nExample:")
-        print('  python meeting_editor.py recording.mp4 transcript.vtt "Karima" "Bobby"')
+        print('  python meeting_editor.py recording.mp4 transcript.vtt "Presenter One" "Presenter Two"')
         sys.exit(1)
-    
+
     video = sys.argv[1]
     vtt = sys.argv[2]
     speakers = sys.argv[3:]
-    
+
     editor = MeetingEditor(video, vtt, speakers)
     editor.analyze()
     editor.audit()
-    
+
     print("\nTo process, call editor.process('output.mp4')")

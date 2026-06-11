@@ -1,0 +1,58 @@
+# Demo Video: Clip Extractor Feature Overview
+# ===========================================
+# ~60 second explainer of the Clip Extractor tool
+# Run: python creator/video_creator.py examples/clip_extractor_demo.yaml examples/clip_extractor_demo.mp4
+
+title: "Clip Extractor — Publishable Clips on Purpose"
+resolution: "1920x1080"
+fps: 30
+voice: "en-US-JennyNeural"
+voice_rate: "+8%"
+
+scenes:
+  - title: "Clip Extractor"
+    subtitle: "From long recording to publishable moments"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#ffb74d"
+    narration: >
+      Clip Extractor turns a long recording into short, publishable moments.
+      You choose the ranges, and the app renders clean clips intentionally.
+
+  - title: "Manual choices first"
+    icon: "✂"
+    bullets:
+      - "Enter start and end times"
+      - "Add a title and optional category"
+      - "Keep human judgment on top of AI decisions"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#4fc3f7"
+    narration: >
+      The workflow is human reviewed. Enter the clip range, title, and optional
+      category. Your choices sit on top of the AI decisions, so publishing
+      intent stays clear.
+
+  - title: "Validated media pipeline"
+    icon: "✓"
+    bullets:
+      - "No fragile stream-copy cuts"
+      - "Normalized audio"
+      - "FFprobe validation for every output"
+      - "ZIP download for multiple clips"
+    visual: slide
+    background: "#1a1a2e"
+    accent_color: "#81c784"
+    narration: >
+      Each clip uses the validated media pipeline. The app re-encodes cleanly,
+      normalizes audio, checks the result with FFprobe, and packages multiple
+      clips into one download.
+
+  - title: "Ready to share"
+    subtitle: "Clean clips, clean audio, clear decisions"
+    visual: slide
+    background: "#0f0f23"
+    accent_color: "#ffb74d"
+    narration: >
+      The result is simple: clean clips, clean audio, and clear decisions.
+      That's Clip Extractor.
