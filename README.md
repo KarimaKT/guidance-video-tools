@@ -1,22 +1,17 @@
 # CAT Video Tools
 
-**CAT Video Tools** is a review-first video production suite for turning recordings, demos, screenshots, source material, and technical explanations into cleaner, shareable video assets.
+**CAT Video Tools** is a review-first video production hub for turning recordings, demos, screenshots, source material, and technical explanations into cleaner, shareable video assets.
 
-It combines a Streamlit app, reusable Python media engines, and portable Clawpilot / Agency Copilot skills. The app does deterministic rendering and validation; the skills help users prepare better plans, scripts, clip ranges, and teaching briefs before they render.
+The fastest way to use it is:
 
-## What you can do
+1. Clone the repo.
+2. Ask Copilot CLI or Claw to use one of the included skills.
+3. Review the generated plan, clip ranges, or YAML.
+4. Open the hub, paste/upload the reviewed input, then render.
 
-| Workflow | Use it when you have | Output |
-|---|---|---|
-| **Meeting Sanitizer** | A meeting recording, transcript, and target speakers | A cleaned recording with non-target segments removed or masked |
-| **Clip Extractor** | A long recording and a list of ranges | Publishable MP4 clips with normalized audio/video |
-| **Demo Video Creator** | A demo brief, YAML script, screenshots, clips, page URL, or guided-tour steps | A narrated product demo or guided web tour |
-| **Technical Explainer Studio** | A hard topic, source links/files, and a teaching goal | A source-grounded storyboard and rendered technical explainer |
-| **Test Gallery** | Curated demo configs and generated examples | A browsable gallery of representative outputs |
+The app does deterministic media work. The skills help you get the YAML, timestamps, titles, storyboards, and QA plan right before you render.
 
-The default hub page shows the four current demo videos for these tools. The **Test Gallery** keeps the rest of the generated test clips, web-tour checks, review JSON, and learning-series examples so they are not lost.
-
-## Quick start
+## Fastest path: install, use a skill, open the hub
 
 ```bash
 git clone https://github.com/KarimaKT/cat-video-tools
@@ -31,23 +26,163 @@ python -m playwright install chromium
 streamlit run app.py
 ```
 
-Open the local app at the URL Streamlit prints, usually `http://localhost:8501`.
+Open the local URL Streamlit prints, usually `http://localhost:8501`.
 
-### Prerequisites
+### Install or use the skills
 
-- **Python 3.10+**
-- **FFmpeg and FFprobe** on PATH
-  - Windows: `winget install Gyan.FFmpeg`
-  - macOS: `brew install ffmpeg`
-- **Playwright Chromium** for guided web-tour capture
-  - `python -m playwright install chromium`
-- Optional: **Node.js** if you want to use `npm test` as the smoke-test wrapper
+The skills live in [`skills/`](skills/). You can use them in two ways:
 
-If FFmpeg was installed while your shell was open on Windows, refresh PATH:
+1. **Fastest in Copilot CLI / Claw:** work from the repo root and ask the assistant to use the relevant file, for example `Use skills/demo-video-draft.md`.
+2. **Reusable skill install:** copy the Markdown file into your Clawpilot / Agency Copilot custom skills location, or create a custom skill from the file contents.
 
-```powershell
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+| Skill file | Use it before | It produces |
+|---|---|---|
+| `skills/meeting-sanitizer-plan.md` | Meeting Sanitizer | Keep speakers, candidate cut ranges, masking checks, title/end-card text, review checklist |
+| `skills/clip-extractor-plan.md` | Clip Extractor | Paste-ready ranges, viewer-facing titles, categories, review notes |
+| `skills/demo-video-draft.md` | Demo Video Creator | Renderable Video Creator YAML with placeholder media paths |
+| `skills/technical-learning-video.md` | Technical Explainer Studio | Topic brief, source notes, storyboard, learning arc guidance |
+
+### Prompt: Meeting Sanitizer
+
+```text
+Use skills/meeting-sanitizer-plan.md.
+
+I need to clean up a recorded webinar in CAT Video Tools.
+Recording path: [path to mp4]
+Transcript path: [path to vtt]
+Keep speakers exactly as: [speaker names as they appear in the transcript]
+Remove or mask: [interruptions, non-presenters, admin chatter, private sections]
+Known good range: [optional timestamps]
+Known bad moments: [optional timestamps or transcript excerpts]
+Title card: [desired title/subtitle]
+Ending card: [desired close]
+
+Create a review-first sanitizer plan. Do not invent timestamps. Mark anything uncertain as review_needed.
+Then create a starter YAML I can audit with:
+python sanitizer/sanitize.py [yaml file] --audit
 ```
+
+After review:
+
+```bash
+python sanitizer/sanitize.py my_cleanup.yaml --audit
+python sanitizer/sanitize.py my_cleanup.yaml --verify 300
+python sanitizer/sanitize.py my_cleanup.yaml
+```
+
+### Prompt: Clip Extractor
+
+```text
+Use skills/clip-extractor-plan.md.
+
+I need publishable clips from this recording:
+Recording path: [path to mp4]
+Transcript/notes: [paste transcript excerpts, rough topics, or timestamps]
+Audience: [who will watch]
+Goal: [what the clips should help viewers understand]
+Preferred number of clips: [number]
+Topics to emphasize: [topics]
+Things to avoid: [privacy, weak moments, stale sections]
+
+Return paste-ready clip ranges in:
+MM:SS - MM:SS | Viewer-facing title | Category
+
+Do not invent exact timestamps. If timestamps are missing, give a planning table and mark timestamp needed.
+```
+
+Paste the reviewed ranges into **Clip Extractor** in the app.
+
+### Prompt: Demo Video Creator
+
+```text
+Use skills/demo-video-draft.md.
+
+Create CAT Video Tools Demo Video Creator YAML for:
+Product/app/feature: [name]
+Audience: [viewer]
+Problem it solves: [pain]
+Main features to show: [3-5 features]
+Assets I have: [screenshots, clips, page URL, walkthrough notes]
+Tone: [executive, maker, technical, customer-facing]
+Target duration: [short duration]
+
+The first scene must start with "Introducing [name]" and explain what was built, who it helps, and why it matters before mechanics.
+Use placeholder image/video paths where I need to replace assets.
+Return only valid YAML.
+```
+
+Save the reviewed YAML and render:
+
+```bash
+python creator/video_creator.py my_demo.yaml output/my_demo.mp4
+```
+
+### Prompt: Technical Explainer Studio
+
+```text
+Use skills/technical-learning-video.md.
+
+Create a technical learning video plan for:
+Topic: [topic]
+Audience: [viewer]
+Misunderstanding to correct: [what people get wrong]
+Feature focus: [what to highlight]
+Sources: [Microsoft Learn URLs, local docs, screenshots, clips, code]
+Desired format: [single explainer or learning series]
+Viewer outcome: [what they should do differently]
+
+Produce a source-grounded brief, storyboard, narration intent, visual strategy, two-pass viewer review checklist, and post-render QA checklist.
+Do not produce a generic summary. Make it teach.
+```
+
+Bring the reviewed storyboard into **Technical Explainer Studio** in the app, or convert it into Video Creator YAML.
+
+### Best prompting practices
+
+- Start with the viewer and job-to-be-done.
+- Provide source material, transcript excerpts, timestamps, screenshots, or URLs when available.
+- Say what must be preserved, removed, masked, or emphasized.
+- Require review gates: audit before render, verify frame, two-pass script review, or post-render QA.
+- Do not ask the assistant to invent timestamps or product capabilities.
+- Keep openings viewer-facing: product name, problem, audience, value, then mechanics.
+- Ask for YAML only when you are ready to save or paste it.
+- Treat generated YAML as a draft: review it in the app before rendering.
+
+## The Video Hub
+
+The default hub page is the front door. It shows the four current demo videos for the four production tools:
+
+![Video Hub home page](examples/web_walkthroughs/screens/02-show-featured-demos.png)
+
+**Guided hub tour:** [Play narrated Video Hub tour](examples/web_walkthroughs/cat-video-tools-portal-walkthrough-narrated.mp4)
+
+| Tool | What it is for | Demo on the front page |
+|---|---|---|
+| **Meeting Sanitizer** | Clean up meeting/webinar recordings for safer reuse | [Play video](examples/better_demos/sanitizer_review_first_demo.mp4) |
+| **Clip Extractor** | Turn long recordings into short publishable clips | [Play video](examples/better_demos/clip_extractor_publishable_demo.mp4) |
+| **Demo Video Creator** | Create narrated product demos and guided web tours | [Play video](examples/better_demos/creator_decision_review_demo.mp4) |
+| **Technical Explainer Studio** | Teach hard concepts with source-grounded storyboards | [Play video](examples/better_demos/technical_explainer_studio_demo.mp4) |
+
+### Demo video previews
+
+| Meeting Sanitizer | Clip Extractor |
+|---|---|
+| [![Meeting Sanitizer demo contact sheet](examples/better_demos/sanitizer_review_first_demo-contact-sheet.png)](examples/better_demos/sanitizer_review_first_demo.mp4) | [![Clip Extractor demo contact sheet](examples/better_demos/clip_extractor_publishable_demo-contact-sheet.png)](examples/better_demos/clip_extractor_publishable_demo.mp4) |
+| [Play Meeting Sanitizer demo](examples/better_demos/sanitizer_review_first_demo.mp4) | [Play Clip Extractor demo](examples/better_demos/clip_extractor_publishable_demo.mp4) |
+
+| Demo Video Creator | Technical Explainer Studio |
+|---|---|
+| [![Demo Video Creator contact sheet](examples/better_demos/creator_decision_review_demo-contact-sheet.png)](examples/better_demos/creator_decision_review_demo.mp4) | [![Technical Explainer Studio contact sheet](examples/better_demos/technical_explainer_studio_demo-contact-sheet.png)](examples/better_demos/technical_explainer_studio_demo.mp4) |
+| [Play Demo Video Creator demo](examples/better_demos/creator_decision_review_demo.mp4) | [Play Technical Explainer Studio demo](examples/better_demos/technical_explainer_studio_demo.mp4) |
+
+The **Test Gallery** keeps the rest of the generated test assets so they are not lost:
+
+- tool test clips
+- guided Video Hub tour videos
+- screenshots and contact sheets
+- review JSON
+- YAML configs
+- Copilot Studio evaluation learning-series examples built from public guidance
 
 ## Use the app
 
@@ -61,7 +196,7 @@ The app is designed around review-before-render workflows.
 
 ### Meeting Sanitizer
 
-Use this when you need to clean up a meeting recording while preserving only selected speakers and masking non-target participants.
+Use this when you need to clean up a meeting recording while preserving selected speakers and masking non-target participants.
 
 1. Open **Meeting Sanitizer**.
 2. Upload a video recording and transcript (`.vtt`).
@@ -79,7 +214,7 @@ Use this when you already know the moments you want from a longer recording.
 
 1. Open **Clip Extractor**.
 2. Upload the source recording.
-3. Paste clip ranges in this format:
+3. Paste reviewed clip ranges:
 
 ```text
 6:09 - 7:17 | Agents Are Not Apps | AI agents
@@ -102,14 +237,7 @@ Use this to produce a short app, product, portal, or workflow demo.
 5. Review the generated script/YAML before rendering.
 6. Render a narrated MP4.
 
-Demo videos can combine:
-
-- generated intro/context slides
-- uploaded screenshots or images
-- embedded video clips
-- guided web-tour footage
-- Microsoft Edge TTS narration
-- optional background music
+Demo videos can combine generated slides, uploaded screenshots, embedded clips, guided web-tour footage, Microsoft Edge TTS narration, and optional background music.
 
 ### Technical Explainer Studio
 
@@ -124,135 +252,6 @@ Use this when the goal is teaching, not just showing a UI.
 ### Test Gallery
 
 The **Test Gallery** reads `test/demo_manifest.yaml` and displays curated examples. Keep it lean: representative configs, review JSON, thumbnails, and sanitized demo references are appropriate; private transcripts and large source recordings should stay out of source control.
-
-## Use with Copilot CLI or Claw
-
-The intended "CLI" workflow is natural language first, deterministic rendering second:
-
-1. Ask Copilot CLI or Claw to use the right skill in `skills/`.
-2. Review the generated plan, clip ranges, or YAML.
-3. Paste it into the app or save it as a YAML file.
-4. Run the app or Python CLI to audit, render, and validate.
-
-This matters because good YAML is editorial work, not just syntax. The best prompts give the assistant the viewer, source context, timestamps or transcript notes, quality bar, and what must be reviewed before rendering.
-
-### Natural-language prompt patterns
-
-Use these prompts from the repo root after cloning.
-
-#### Meeting Sanitizer
-
-Use this when you have a recording and transcript and need a safer webinar/meeting cleanup plan before rendering.
-
-```text
-Use the skill in skills/meeting-sanitizer-plan.md.
-
-I need to clean up a recorded webinar in CAT Video Tools.
-Recording path: [path to mp4]
-Transcript path: [path to vtt]
-Keep speakers exactly as: [speaker names as they appear in the transcript]
-Remove or mask: [interruptions, non-presenters, admin chatter, private sections]
-Known good range: [optional timestamps]
-Known bad moments: [optional timestamps or transcript excerpts]
-Title card: [desired title/subtitle]
-Ending card: [desired close]
-
-Create a review-first sanitizer plan. Do not invent timestamps. Mark anything uncertain as review_needed.
-Then create a starter YAML I can audit with:
-python sanitizer/sanitize.py [yaml file] --audit
-```
-
-After reviewing the plan:
-
-```bash
-python sanitizer/sanitize.py my_cleanup.yaml --audit
-python sanitizer/sanitize.py my_cleanup.yaml --verify 300
-python sanitizer/sanitize.py my_cleanup.yaml
-```
-
-#### Clip Extractor
-
-Use this when you want strong short clips from a longer recording.
-
-```text
-Use the skill in skills/clip-extractor-plan.md.
-
-I need publishable clips from this recording:
-Recording path: [path to mp4]
-Transcript/notes: [paste transcript excerpts, rough topics, or timestamps]
-Audience: [who will watch]
-Goal: [what the clips should help viewers understand]
-Preferred number of clips: [number]
-Topics to emphasize: [topics]
-Things to avoid: [privacy, weak moments, stale sections]
-
-Return paste-ready clip ranges in:
-MM:SS - MM:SS | Viewer-facing title | Category
-
-Do not invent exact timestamps. If timestamps are missing, give a planning table and mark timestamp needed.
-```
-
-Paste the reviewed ranges into **Clip Extractor** in the app, or use the Python API in `sanitizer/clip_extractor.py`.
-
-#### Demo Video Creator
-
-Use this when you need YAML for a short product demo or guided web tour.
-
-```text
-Use the skill in skills/demo-video-draft.md.
-
-Create CAT Video Tools Demo Video Creator YAML for:
-Product/app/feature: [name]
-Audience: [viewer]
-Problem it solves: [pain]
-Main features to show: [3-5 features]
-Assets I have: [screenshots, clips, page URL, walkthrough notes]
-Tone: [executive, maker, technical, customer-facing]
-Target duration: [short duration]
-
-The first scene must start with "Introducing [name]" and explain what was built, who it helps, and why it matters before mechanics.
-Use placeholder image/video paths where I need to replace assets.
-Return only valid YAML.
-```
-
-Save the reviewed YAML and render:
-
-```bash
-python creator/video_creator.py my_demo.yaml output/my_demo.mp4
-```
-
-#### Technical Explainer Studio
-
-Use this when the video needs to teach a hard concept, not just show a UI.
-
-```text
-Use the skill in skills/technical-learning-video.md.
-
-Create a technical learning video plan for:
-Topic: [topic]
-Audience: [viewer]
-Misunderstanding to correct: [what people get wrong]
-Feature focus: [what to highlight]
-Sources: [Microsoft Learn URLs, local docs, screenshots, clips, code]
-Desired format: [single explainer or learning series]
-Viewer outcome: [what they should do differently]
-
-Produce a source-grounded brief, storyboard, narration intent, visual strategy, two-pass viewer review checklist, and post-render QA checklist.
-Do not produce a generic summary. Make it teach.
-```
-
-Bring the reviewed storyboard into **Technical Explainer Studio** in the app, or convert it into Video Creator YAML for rendering.
-
-### Prompting rules that produced the best YAML
-
-- Start with the viewer and the job-to-be-done.
-- Give source material, transcript excerpts, timestamps, or screenshots when available.
-- Say what must be preserved, removed, masked, or emphasized.
-- Require review gates: audit before render, verify frame, two-pass script review, or post-render QA.
-- Do not ask the assistant to invent timestamps or product capabilities.
-- Keep title cards and openings viewer-facing: product name, problem, audience, value, then mechanics.
-- Ask for YAML only when you are ready to save or paste it.
-- Treat generated YAML as a draft: review it in the app before rendering.
 
 ## Use the Python CLI directly
 
@@ -284,7 +283,7 @@ Audit before rendering:
 python sanitizer/sanitize.py ai_webinar_project.yaml --audit
 ```
 
-Verify a masked frame at a source timestamp:
+Verify a masked frame:
 
 ```bash
 python sanitizer/sanitize.py ai_webinar_project.yaml --verify 300
@@ -294,14 +293,6 @@ Render:
 
 ```bash
 python sanitizer/sanitize.py ai_webinar_project.yaml
-```
-
-Useful options:
-
-```bash
-python sanitizer/sanitize.py --templates
-python sanitizer/sanitize.py ai_webinar_project.yaml --crf 20
-python sanitizer/sanitize.py ai_webinar_project.yaml --no-audio-enhance
 ```
 
 ### Demo Video Creator CLI
@@ -361,33 +352,19 @@ extract_clips(
 )
 ```
 
-### Media pipeline smoke test
-
-Run this before shipping media changes:
-
-```bash
-python test/smoke_media_pipeline.py
-```
-
-Or through npm:
-
-```bash
-npm test
-```
-
-The smoke test synthesizes short video/audio assets with FFmpeg, renders segments, concatenates mixed media shapes, validates output with FFprobe, and exercises clip extraction.
-
 ## Architecture
 
 ```mermaid
 flowchart TB
     User["User"] --> App["Streamlit app.py"]
-    User --> CLI["CLI entry points"]
+    User --> CLI["Python CLI entry points"]
     User --> Skills["Portable skills in skills/"]
 
     Skills --> Plans["Plans, clip ranges, YAML drafts, storyboards"]
     Plans --> App
+    Plans --> CLI
 
+    App --> Home["Video Hub home page"]
     App --> SanitizerUI["Meeting Sanitizer UI"]
     App --> ClipUI["Clip Extractor UI"]
     App --> CreatorUI["Demo Video Creator UI"]
@@ -422,15 +399,15 @@ flowchart TB
 
 | Module | Responsibility |
 |---|---|
-| `app.py` | Streamlit UI, upload/review/render flows, Test Gallery |
+| `app.py` | Streamlit hub, upload/review/render flows, Test Gallery |
 | `sanitizer/meeting_editor.py` | Transcript-driven meeting cleanup, speaker preservation, masking, audit, render |
 | `sanitizer/clip_extractor.py` | Intentional clip extraction using validated render settings |
 | `sanitizer/media_pipeline.py` | Shared FFmpeg/FFprobe commands, normalization, concatenation, validation |
 | `sanitizer/sanitize.py` | Meeting Sanitizer CLI |
 | `creator/video_creator.py` | YAML-to-video rendering, slides, image/video scenes, narration, music |
 | `creator/web_walkthrough.py` | Guided browser tour capture and sidecar metadata |
-| `scripts/` | Demo and learning-series generation scripts |
 | `skills/` | Portable planning/drafting skills for better app inputs |
+| `test/demo_manifest.yaml` | Demo/test gallery manifest |
 | `test/smoke_media_pipeline.py` | Synthetic media regression smoke test |
 
 ### Design principles
@@ -441,18 +418,37 @@ flowchart TB
 4. **Skills prepare, app renders**: prompt skills help think and draft; Python modules do deterministic media work.
 5. **Source-control hygiene**: generated source recordings, private transcripts, temporary files, and large media outputs are excluded by default.
 
-## Portable skills
+## Prerequisites
 
-Skills live in [`skills/`](skills/) and can be copied or installed into Clawpilot / Agency Copilot.
+- **Python 3.10+**
+- **FFmpeg and FFprobe** on PATH
+  - Windows: `winget install Gyan.FFmpeg`
+  - macOS: `brew install ffmpeg`
+- **Playwright Chromium** for guided web-tour capture
+  - `python -m playwright install chromium`
+- Optional: **Node.js** if you want to use `npm test` as the smoke-test wrapper
 
-| Skill | Use before | Produces |
-|---|---|---|
-| `/meeting-sanitizer-plan` | Meeting Sanitizer | Keep speakers, candidate cut ranges, masking checks, title/end-card text, review checklist |
-| `/clip-extractor-plan` | Clip Extractor | Paste-ready ranges, viewer-facing titles, categories, review notes |
-| `/demo-video-draft` | Demo Video Creator | Renderable Video Creator YAML with placeholder media paths |
-| `/technical-learning-video` | Technical Explainer Studio | Topic brief, source notes, storyboard, learning arc guidance |
-| `video_app_user.md` | Operating CAT Video Tools | Review-before-render usage guidance |
-| `video_app_maker.md` | Building similar tools | Product and engineering guidance for human-reviewed video apps |
+If FFmpeg was installed while your shell was open on Windows, refresh PATH:
+
+```powershell
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+```
+
+## Test
+
+Run this before shipping media changes:
+
+```bash
+python test/smoke_media_pipeline.py
+```
+
+Or through npm:
+
+```bash
+npm test
+```
+
+The smoke test synthesizes short video/audio assets with FFmpeg, renders segments, concatenates mixed media shapes, validates output with FFprobe, and exercises clip extraction.
 
 ## Repository layout
 
@@ -473,7 +469,6 @@ cat-video-tools/
 │   ├── web_walkthrough.py
 │   ├── music.py
 │   └── templates/
-├── scripts/
 ├── skills/
 ├── test/
 │   ├── demo_manifest.yaml
@@ -505,11 +500,10 @@ The `.gitignore` is intentionally conservative for video work. Do not commit:
 - raw meeting recordings
 - private transcripts
 - intermediate render folders
-- generated large MP4/WAV/MP3 files
 - personal project YAML files
 - local-only absolute-path manifests
 
-Commit small representative configs, review JSON, scripts, and docs instead.
+Commit public demo outputs, small representative configs, review JSON, scripts, and docs instead.
 
 ## License
 
