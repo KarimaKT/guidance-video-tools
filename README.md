@@ -7,11 +7,11 @@ The fastest way to use it is:
 1. Clone the repo.
 2. Ask Copilot CLI or Claw to use one of the included skills.
 3. Review the generated plan, clip ranges, or YAML.
-4. Open the hub, paste/upload the reviewed input, then render.
+4. Either run the tool directly from the CLI with that YAML, or open the hub to paste/upload the YAML so you can view, tweak, and run it.
 
 The app does deterministic media work. The skills help you get the YAML, timestamps, titles, storyboards, and QA plan right before you render.
 
-## Fastest path: install, use a skill, open the hub
+## Fastest path: install, use a skill, run or review
 
 ```bash
 git clone https://github.com/KarimaKT/guidance-video-tools
@@ -27,6 +27,13 @@ streamlit run app.py
 ```
 
 Open the local URL Streamlit prints, usually `http://localhost:8501`.
+
+The fast path is not app-only. Use Copilot CLI or Claw to create the right YAML or clip plan, then choose one of two execution paths:
+
+| Path | Use when | What you do |
+|---|---|---|
+| **Run from CLI** | You trust the YAML and want the fastest deterministic render | Save the YAML and run `python sanitizer/sanitize.py ...` or `python creator/video_creator.py ...` |
+| **Review in the hub** | You want to inspect/tweak before rendering | Paste or upload the YAML/clip ranges in the matching tool, preview the plan, then render |
 
 ### Install or use the skills
 
@@ -111,11 +118,13 @@ Use placeholder image/video paths where I need to replace assets.
 Return only valid YAML.
 ```
 
-Save the reviewed YAML and render:
+Save the reviewed YAML and render directly:
 
 ```bash
 python creator/video_creator.py my_demo.yaml output/my_demo.mp4
 ```
+
+Or paste/upload the YAML in **Demo Video Creator** to review and tweak scenes before rendering.
 
 ### Prompt: Technical Explainer Studio
 
