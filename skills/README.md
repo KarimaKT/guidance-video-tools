@@ -1,4 +1,4 @@
-# CAT Video Tools skills
+# Guidance Video Tools skills
 
 These are portable Clawpilot / Agency Copilot instructions that help users prepare better inputs before using the app.
 
@@ -12,7 +12,7 @@ The app remains the deterministic renderer and media processor. The skills are p
 | `/clip-extractor-plan` | Clip Extractor | Paste-ready clip ranges, viewer-facing titles, categories, review notes |
 | `/demo-video-draft` | Demo Video Creator | Demo Video Creator YAML with screenshot/video placeholders |
 | `/technical-learning-video` | Technical Explainer Studio | Topic brief, source notes, storyboard, learning arc guidance |
-| `video_app_user.md` | Operating CAT Video Tools | Review-before-render usage guidance |
+| `video_app_user.md` | Operating Guidance Video Tools | Review-before-render usage guidance |
 | `video_app_maker.md` | Building similar tools | Product and engineering guidance for human-reviewed video apps |
 
 ## How to use
@@ -20,7 +20,7 @@ The app remains the deterministic renderer and media processor. The skills are p
 1. Copy or install the skill in Clawpilot / Agency Copilot.
 2. Run the skill with your topic, recording notes, transcript excerpts, source links, or audience.
 3. Review the generated plan or YAML.
-4. Bring the reviewed output back into CAT Video Tools.
+4. Bring the reviewed output back into Guidance Video Tools.
 5. Render only after the app audit/preview/review step is complete.
 
 ## Natural-language prompt starters
@@ -48,7 +48,7 @@ Return paste-ready ranges: MM:SS - MM:SS | title | category. Do not invent times
 ### Demo Video Creator
 
 ```text
-Use skills/demo-video-draft.md. Create CAT Video Tools YAML for a product demo.
+Use skills/demo-video-draft.md. Create Guidance Video Tools YAML for a product demo.
 Product/feature: [...]
 Audience: [...]
 Problem and value: [...]

@@ -4,7 +4,7 @@ Use this skill before creating a technical explainer, product walkthrough, app d
 
 ## Purpose
 
-Turn a hard topic, source material, demo scenario, or product feature into a viewer-centered learning plan that can be reviewed and then rendered in CAT Video Tools.
+Turn a hard topic, source material, demo scenario, or product feature into a viewer-centered learning plan that can be reviewed and then rendered in Guidance Video Tools.
 
 The output should teach, orient, and make the viewer care. It should not be a lazy summary, implementation dump, or internal workflow checklist.
 

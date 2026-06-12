@@ -1,6 +1,6 @@
-# CAT Video Tools
+# Guidance Video Tools
 
-**CAT Video Tools** is a review-first video production hub for turning recordings, demos, screenshots, source material, and technical explanations into cleaner, shareable video assets.
+**Guidance Video Tools** is a review-first video production hub for turning recordings, demos, screenshots, source material, and technical explanations into cleaner, shareable video assets.
 
 The fastest way to use it is:
 
@@ -14,8 +14,8 @@ The app does deterministic media work. The skills help you get the YAML, timesta
 ## Fastest path: install, use a skill, open the hub
 
 ```bash
-git clone https://github.com/KarimaKT/cat-video-tools
-cd cat-video-tools
+git clone https://github.com/KarimaKT/guidance-video-tools
+cd guidance-video-tools
 
 python -m venv .venv
 .venv\Scripts\activate
@@ -47,7 +47,7 @@ The skills live in [`skills/`](skills/). You can use them in two ways:
 ```text
 Use skills/meeting-sanitizer-plan.md.
 
-I need to clean up a recorded webinar in CAT Video Tools.
+I need to clean up a recorded webinar in Guidance Video Tools.
 Recording path: [path to mp4]
 Transcript path: [path to vtt]
 Keep speakers exactly as: [speaker names as they appear in the transcript]
@@ -97,7 +97,7 @@ Paste the reviewed ranges into **Clip Extractor** in the app.
 ```text
 Use skills/demo-video-draft.md.
 
-Create CAT Video Tools Demo Video Creator YAML for:
+Create Guidance Video Tools Demo Video Creator YAML for:
 Product/app/feature: [name]
 Audience: [viewer]
 Problem it solves: [pain]
@@ -453,7 +453,7 @@ The smoke test synthesizes short video/audio assets with FFmpeg, renders segment
 ## Repository layout
 
 ```text
-cat-video-tools/
+guidance-video-tools/
 ├── app.py
 ├── requirements.txt
 ├── package.json

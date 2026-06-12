@@ -1,6 +1,6 @@
 # Portable skill: building human-reviewed video tools
 
-Use this guidance when building apps similar to CAT Video Tools.
+Use this guidance when building apps similar to Guidance Video Tools.
 
 ## Principles
 

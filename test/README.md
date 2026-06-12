@@ -1,6 +1,6 @@
 # Test and demo assets
 
-This folder is the curated test/demo hub for CAT Video Tools.
+This folder is the curated test/demo hub for Guidance Video Tools.
 
 Keep it lean:
 

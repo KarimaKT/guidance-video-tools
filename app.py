@@ -1,5 +1,5 @@
 """
-CAT Video Tools — Web UI
+Guidance Video Tools — Web UI
 =========================
 Streamlit-based interface for both tools:
   1. Meeting Sanitizer: upload recording + transcript → get clean video
@@ -321,7 +321,7 @@ def _default_web_walkthrough_steps(url: str) -> list[dict]:
         {
             "label": "Open the portal",
             "action": "goto",
-            "narration": "Introducing CAT Video Tools, the local portal for production-ready video workflows.",
+            "narration": "Introducing Guidance Video Tools, the local portal for production-ready video workflows.",
         },
         {
             "label": "Show featured demos",
@@ -1043,7 +1043,7 @@ def _document_assets() -> list[dict]:
     return [a for a in st.session_state.get("content_assets", []) if a.get("kind") == "documents"]
 
 st.set_page_config(
-    page_title="CAT Video Tools",
+    page_title="Guidance Video Tools",
     page_icon="🎬",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -1068,49 +1068,49 @@ st.markdown("""
         margin-bottom: 1rem;
     }
     .cat-hero {
-        padding: 2.25rem 2.4rem;
-        border-radius: 28px;
+        padding: 1.35rem 1.65rem;
+        border-radius: 22px;
         background:
             radial-gradient(circle at top left, rgba(56, 189, 248, 0.34), transparent 34%),
             radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.32), transparent 34%),
             linear-gradient(135deg, #0f172a 0%, #172554 52%, #312e81 100%);
         color: white;
-        box-shadow: 0 24px 64px rgba(15, 23, 42, 0.22);
-        margin-bottom: 1.5rem;
+        box-shadow: 0 18px 46px rgba(15, 23, 42, 0.18);
+        margin-bottom: .85rem;
     }
     .cat-eyebrow {
         color: #bae6fd;
         font-weight: 700;
         letter-spacing: .08em;
         text-transform: uppercase;
-        font-size: .78rem;
-        margin-bottom: .65rem;
+        font-size: .68rem;
+        margin-bottom: .45rem;
     }
     .cat-hero h1 {
-        font-size: 3.2rem;
+        font-size: 2.35rem;
         line-height: 1.04;
-        margin: 0 0 .8rem 0;
+        margin: 0 0 .5rem 0;
         letter-spacing: -0.05em;
     }
     .cat-hero p {
-        font-size: 1.08rem;
+        font-size: .95rem;
         color: #dbeafe;
-        max-width: 860px;
-        margin-bottom: 1.15rem;
+        max-width: 920px;
+        margin-bottom: .7rem;
     }
     .cat-pill-row {
         display: flex;
         flex-wrap: wrap;
-        gap: .6rem;
-        margin-top: 1.1rem;
+        gap: .4rem;
+        margin-top: .7rem;
     }
     .cat-pill {
         border: 1px solid rgba(255,255,255,.22);
         background: rgba(255,255,255,.10);
         border-radius: 999px;
-        padding: .46rem .78rem;
+        padding: .32rem .58rem;
         color: #eff6ff;
-        font-size: .88rem;
+        font-size: .78rem;
         backdrop-filter: blur(10px);
     }
     .section-kicker {
@@ -1119,7 +1119,7 @@ st.markdown("""
         letter-spacing: .08em;
         text-transform: uppercase;
         font-size: .76rem;
-        margin-top: .6rem;
+        margin-top: .15rem;
     }
     .landing-card {
         border: 1px solid #e5e7eb;
@@ -1160,6 +1160,33 @@ st.markdown("""
         font-size: .82rem;
         margin-bottom: .55rem;
     }
+    .workflow-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        padding: .8rem .95rem;
+        background: #ffffff;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        min-height: 185px;
+    }
+    .workflow-card h3 {
+        margin: 0 0 .35rem 0;
+        color: #111827;
+        font-size: 1.25rem;
+    }
+    .workflow-card p {
+        color: #4b5563;
+        font-size: .9rem;
+        margin-bottom: .45rem;
+    }
+    .workflow-card ul {
+        margin: 0 0 .35rem 0;
+        padding-left: 1.1rem;
+        color: #374151;
+        font-size: .86rem;
+    }
+    .workflow-card li {
+        margin-bottom: .12rem;
+    }
     .stProgress > div > div > div > div {
         background: linear-gradient(90deg, #4fc3f7, #81c784);
     }
@@ -1169,8 +1196,8 @@ st.markdown("""
 
 # ── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown('<p class="main-header">🎬 CAT Video Tools</p>', unsafe_allow_html=True)
-    st.caption("Power CAT Video Production Suite")
+    st.markdown('<p class="main-header">🎬 Guidance Video Tools</p>', unsafe_allow_html=True)
+    st.caption("KT Video Production Suite")
     st.divider()
 
     tool = st.radio(
@@ -1182,7 +1209,7 @@ with st.sidebar:
     st.divider()
     st.caption("v1.0 • Built with Streamlit")
     st.caption("GitHub: [@KarimaKT](https://github.com/KarimaKT)")
-    st.caption("[Repo](https://github.com/KarimaKT/cat-video-tools)")
+    st.caption("[Repo](https://github.com/KarimaKT/guidance-video-tools)")
 
 
 # ── Home Page ────────────────────────────────────────────────────────────────
@@ -1207,8 +1234,8 @@ if tool == "🏠 Home":
 
     st.markdown("""
     <div class="cat-hero">
-        <div class="cat-eyebrow">Power CAT video production suite</div>
-        <h1>Introducing CAT Video Tools</h1>
+        <div class="cat-eyebrow">KT Video Production Suite</div>
+        <h1>Introducing Guidance Video Tools</h1>
         <p>
             A local production app for turning meetings, recordings, scripts, source folders,
             Microsoft Learn pages, and technical topics into reviewable, publishable video assets.
@@ -1223,15 +1250,9 @@ if tool == "🏠 Home":
     </div>
     """, unsafe_allow_html=True)
 
-    metric1, metric2, metric3, metric4 = st.columns(4)
-    metric1.metric("Tools", "4", "one local suite")
-    metric2.metric("Review gates", "2x", "script checks")
-    metric3.metric("Demo videos", str(len([d for d in workflow_demos.values() if d])), "in workflows")
-    metric4.metric("Course parts", str(len(evaluation_demos)), "evaluation series")
-
     st.markdown('<div class="section-kicker">Choose a workflow</div>', unsafe_allow_html=True)
     st.markdown("## Four production workflows")
-    st.caption("Each workflow card includes the product promise, the generated video, and the caption in one place.")
+    st.caption("The four main workflow boxes stay above the fold; open a demo only when you want to preview the generated video.")
 
     def render_workflow_video(kind: str) -> None:
         demo = workflow_demos.get(kind)
@@ -1239,20 +1260,27 @@ if tool == "🏠 Home":
             st.info("Demo not generated yet.")
             return
         media_path = _demo_media_path(demo)
-        if media_path and media_path.exists():
-            st.video(str(media_path))
-        elif media_path:
-            st.warning(f"Demo media missing: `{media_path}`")
-        if demo.get("description"):
-            st.caption(demo["description"])
+        with st.expander("Watch demo", expanded=False):
+            if media_path and media_path.exists():
+                st.video(str(media_path))
+            elif media_path:
+                st.warning(f"Demo media missing: `{media_path}`")
+            if demo.get("description"):
+                st.caption(demo["description"])
 
     def render_workflow_card(title: str, body: str, bullets: list[str], kind: str) -> None:
-        with st.container(border=True):
-            st.markdown(f"### {title}")
-            st.write(body)
-            for bullet in bullets:
-                st.markdown(f"- {bullet}")
-            render_workflow_video(kind)
+        bullet_html = "".join(f"<li>{bullet}</li>" for bullet in bullets[:2])
+        st.markdown(
+            f"""
+            <div class="workflow-card">
+                <h3>{title}</h3>
+                <p>{body}</p>
+                <ul>{bullet_html}</ul>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+        render_workflow_video(kind)
 
     card1, card2 = st.columns(2)
     with card1:
@@ -1262,7 +1290,6 @@ if tool == "🏠 Home":
             [
                 "Transcript-guided cuts and manual overrides",
                 "Presenter preservation and non-presenter masking",
-                "Frame verification before rendering",
             ],
             "sanitizer",
         )
@@ -1273,7 +1300,6 @@ if tool == "🏠 Home":
             [
                 "Manual ranges with editable titles/categories",
                 "Normalized audio and FFprobe validation",
-                "ZIP packaging for review and reuse",
             ],
             "clip extraction",
         )
@@ -1286,7 +1312,6 @@ if tool == "🏠 Home":
             [
                 "Structured script-to-demo workflow",
                 "Raw walkthrough footage plus narrated assembly",
-                "Neural narration and styled slides",
             ],
             "creator",
         )
@@ -1297,7 +1322,6 @@ if tool == "🏠 Home":
             [
                 "User framing, misunderstandings, and feature focus",
                 "Microsoft Learn pages, local folders, screenshots, demos",
-                "Self-critique and editable storyboard",
             ],
             "technical explainer",
         )
@@ -1801,7 +1825,7 @@ elif tool == "🎥 Demo Video Creator":
         col1, col2 = st.columns([1.2, 1])
         with col1:
             walkthrough_url = st.text_input("Web page to show", value="http://localhost:8601")
-            walkthrough_title = st.text_input("Walkthrough title", value="CAT Video Tools Portal Walkthrough")
+            walkthrough_title = st.text_input("Walkthrough title", value="Guidance Video Tools Portal Walkthrough")
         with col2:
             walkthrough_voice = st.selectbox("Narration voice", [
                 "en-US-AriaNeural (Female)",
@@ -2024,7 +2048,7 @@ Then replace placeholder media paths, save the YAML, and upload it here.
                 "Upload `.yaml` or `.yml` script",
                 type=["yaml", "yml"],
                 key="creator_yaml_upload",
-                help="This should be a CAT Video Tools video script with title, voice, and scenes.",
+                help="This should be a Guidance Video Tools video script with title, voice, and scenes.",
             )
 
         if script_file:

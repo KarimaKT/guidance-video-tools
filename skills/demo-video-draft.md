@@ -1,6 +1,6 @@
 # /demo-video-draft
 
-Generate a viewer-facing CAT Video Tools Demo Video Creator YAML draft from a topic, scenario, audience, and optional capture notes.
+Generate a viewer-facing Guidance Video Tools Demo Video Creator YAML draft from a topic, scenario, audience, and optional capture notes.
 
 ## Use when
 
@@ -8,7 +8,7 @@ You have a rough demo idea and want Clawpilot or Agency Copilot to draft the YAM
 
 ## Instructions
 
-You are generating a draft YAML script for CAT Video Tools: Demo Video Creator.
+You are generating a draft YAML script for Guidance Video Tools: Demo Video Creator.
 
 I will give you a topic, product, feature, or scenario. Create a viewer-facing product demo script, not an internal task list.
 

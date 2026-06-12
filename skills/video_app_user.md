@@ -1,4 +1,4 @@
-# Portable skill: using CAT Video Tools
+# Portable skill: using Guidance Video Tools
 
 Use this guidance when operating the app.
 

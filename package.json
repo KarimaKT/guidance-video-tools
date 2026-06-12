@@ -1,8 +1,8 @@
 {
-  "name": "cat-video-tools",
+  "name": "guidance-video-tools",
   "version": "1.0.0",
   "private": true,
-  "description": "Power CAT Video Production Suite: sanitizer, clip extractor, demo video creator, and technical explainer workflows.",
+  "description": "KT Video Production Suite: sanitizer, clip extractor, demo video creator, and technical explainer workflows.",
   "main": "index.js",
   "directories": {
     "example": "examples",
@@ -13,16 +13,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KarimaKT/cat-video-tools.git"
+    "url": "git+https://github.com/KarimaKT/guidance-video-tools.git"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/KarimaKT/cat-video-tools/issues"
+    "url": "https://github.com/KarimaKT/guidance-video-tools/issues"
   },
-  "homepage": "https://github.com/KarimaKT/cat-video-tools#readme",
+  "homepage": "https://github.com/KarimaKT/guidance-video-tools#readme",
   "devDependencies": {
     "pptxgenjs": "^4.0.1"
   }
