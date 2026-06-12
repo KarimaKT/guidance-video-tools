@@ -2300,10 +2300,10 @@ Sources or examples: [docs, folders, screenshots, demos]
         learn_url = st.text_input("Any Microsoft Learn doc page URL", placeholder="https://learn.microsoft.com/...")
         folder_paths = st.text_area(
             "Local folder paths, one per line",
-            placeholder="C:\\src\\vid\\dvwebinar\nC:\\path\\to\\screenshots-or-docs",
+            placeholder="C:\\path\\to\\recording-or-demo-assets\nC:\\path\\to\\screenshots-or-docs",
             height=80,
         )
-        existing_demo = st.text_input("Existing demo video or clip to include", placeholder="C:\\src\\vid\\dvwebinar\\3-clips\\final\\09-design-enterprise-agent.mp4")
+        existing_demo = st.text_input("Existing demo video or clip to include", placeholder="C:\\path\\to\\approved-demo-or-clip.mp4")
 
         source_col1, source_col2 = st.columns(2)
         with source_col1:
