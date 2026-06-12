@@ -1192,6 +1192,7 @@ if tool == "🏠 Home":
     current_demos = sorted([
         demo for demo in demos
         if "better demo - generated" in str(demo.get("status", ""))
+        and demo.get("front_page")
     ], key=_workflow_order_key)
     workflow_demos = {
         "sanitizer": _first_demo_for(current_demos, "sanitizer"),

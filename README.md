@@ -14,6 +14,8 @@ It combines a Streamlit app, reusable Python media engines, and portable Clawpil
 | **Technical Explainer Studio** | A hard topic, source links/files, and a teaching goal | A source-grounded storyboard and rendered technical explainer |
 | **Test Gallery** | Curated demo configs and generated examples | A browsable gallery of representative outputs |
 
+The default hub page shows the four current demo videos for these tools. The **Test Gallery** keeps the rest of the generated test clips, web-tour checks, review JSON, and learning-series examples so they are not lost.
+
 ## Quick start
 
 ```bash
@@ -123,9 +125,138 @@ Use this when the goal is teaching, not just showing a UI.
 
 The **Test Gallery** reads `test/demo_manifest.yaml` and displays curated examples. Keep it lean: representative configs, review JSON, thumbnails, and sanitized demo references are appropriate; private transcripts and large source recordings should stay out of source control.
 
-## Use the CLI
+## Use with Copilot CLI or Claw
 
-The app is the recommended entry point, but the core engines are also scriptable.
+The intended "CLI" workflow is natural language first, deterministic rendering second:
+
+1. Ask Copilot CLI or Claw to use the right skill in `skills/`.
+2. Review the generated plan, clip ranges, or YAML.
+3. Paste it into the app or save it as a YAML file.
+4. Run the app or Python CLI to audit, render, and validate.
+
+This matters because good YAML is editorial work, not just syntax. The best prompts give the assistant the viewer, source context, timestamps or transcript notes, quality bar, and what must be reviewed before rendering.
+
+### Natural-language prompt patterns
+
+Use these prompts from the repo root after cloning.
+
+#### Meeting Sanitizer
+
+Use this when you have a recording and transcript and need a safer webinar/meeting cleanup plan before rendering.
+
+```text
+Use the skill in skills/meeting-sanitizer-plan.md.
+
+I need to clean up a recorded webinar in CAT Video Tools.
+Recording path: [path to mp4]
+Transcript path: [path to vtt]
+Keep speakers exactly as: [speaker names as they appear in the transcript]
+Remove or mask: [interruptions, non-presenters, admin chatter, private sections]
+Known good range: [optional timestamps]
+Known bad moments: [optional timestamps or transcript excerpts]
+Title card: [desired title/subtitle]
+Ending card: [desired close]
+
+Create a review-first sanitizer plan. Do not invent timestamps. Mark anything uncertain as review_needed.
+Then create a starter YAML I can audit with:
+python sanitizer/sanitize.py [yaml file] --audit
+```
+
+After reviewing the plan:
+
+```bash
+python sanitizer/sanitize.py my_cleanup.yaml --audit
+python sanitizer/sanitize.py my_cleanup.yaml --verify 300
+python sanitizer/sanitize.py my_cleanup.yaml
+```
+
+#### Clip Extractor
+
+Use this when you want strong short clips from a longer recording.
+
+```text
+Use the skill in skills/clip-extractor-plan.md.
+
+I need publishable clips from this recording:
+Recording path: [path to mp4]
+Transcript/notes: [paste transcript excerpts, rough topics, or timestamps]
+Audience: [who will watch]
+Goal: [what the clips should help viewers understand]
+Preferred number of clips: [number]
+Topics to emphasize: [topics]
+Things to avoid: [privacy, weak moments, stale sections]
+
+Return paste-ready clip ranges in:
+MM:SS - MM:SS | Viewer-facing title | Category
+
+Do not invent exact timestamps. If timestamps are missing, give a planning table and mark timestamp needed.
+```
+
+Paste the reviewed ranges into **Clip Extractor** in the app, or use the Python API in `sanitizer/clip_extractor.py`.
+
+#### Demo Video Creator
+
+Use this when you need YAML for a short product demo or guided web tour.
+
+```text
+Use the skill in skills/demo-video-draft.md.
+
+Create CAT Video Tools Demo Video Creator YAML for:
+Product/app/feature: [name]
+Audience: [viewer]
+Problem it solves: [pain]
+Main features to show: [3-5 features]
+Assets I have: [screenshots, clips, page URL, walkthrough notes]
+Tone: [executive, maker, technical, customer-facing]
+Target duration: [short duration]
+
+The first scene must start with "Introducing [name]" and explain what was built, who it helps, and why it matters before mechanics.
+Use placeholder image/video paths where I need to replace assets.
+Return only valid YAML.
+```
+
+Save the reviewed YAML and render:
+
+```bash
+python creator/video_creator.py my_demo.yaml output/my_demo.mp4
+```
+
+#### Technical Explainer Studio
+
+Use this when the video needs to teach a hard concept, not just show a UI.
+
+```text
+Use the skill in skills/technical-learning-video.md.
+
+Create a technical learning video plan for:
+Topic: [topic]
+Audience: [viewer]
+Misunderstanding to correct: [what people get wrong]
+Feature focus: [what to highlight]
+Sources: [Microsoft Learn URLs, local docs, screenshots, clips, code]
+Desired format: [single explainer or learning series]
+Viewer outcome: [what they should do differently]
+
+Produce a source-grounded brief, storyboard, narration intent, visual strategy, two-pass viewer review checklist, and post-render QA checklist.
+Do not produce a generic summary. Make it teach.
+```
+
+Bring the reviewed storyboard into **Technical Explainer Studio** in the app, or convert it into Video Creator YAML for rendering.
+
+### Prompting rules that produced the best YAML
+
+- Start with the viewer and the job-to-be-done.
+- Give source material, transcript excerpts, timestamps, or screenshots when available.
+- Say what must be preserved, removed, masked, or emphasized.
+- Require review gates: audit before render, verify frame, two-pass script review, or post-render QA.
+- Do not ask the assistant to invent timestamps or product capabilities.
+- Keep title cards and openings viewer-facing: product name, problem, audience, value, then mechanics.
+- Ask for YAML only when you are ready to save or paste it.
+- Treat generated YAML as a draft: review it in the app before rendering.
+
+## Use the Python CLI directly
+
+The app is the recommended entry point, but the core engines are also scriptable after the natural-language planning step.
 
 ### Meeting Sanitizer CLI
 

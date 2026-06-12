@@ -35,6 +35,18 @@ examples/physics_k1/
 examples/**/_staging/
 to-delete-review/
 
+# Curated demo/test gallery media that should ship with the video hub
+!examples/better_demos/*.mp4
+!examples/better_demos/*.png
+!examples/better_demos/clips/
+!examples/better_demos/clips/*.mp4
+!examples/web_walkthroughs/*.mp4
+!examples/web_walkthroughs/screens/
+!examples/web_walkthroughs/screens/*.png
+!examples/learning_series/evaluating_agents/*.mp4
+!examples/learning_series/evaluating_agents/assets/
+!examples/learning_series/evaluating_agents/assets/**/*.png
+
 # IDE
 .vscode/
 .idea/

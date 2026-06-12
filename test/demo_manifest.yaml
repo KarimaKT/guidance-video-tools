@@ -6,6 +6,7 @@ demos:
   created_video: true
   production_status: final
   featured: true
+  front_page: true
   tool: Demo Video Creator
   topic: Product demo creation
   thumbnail: examples/better_demos/creator_decision_review_demo-contact-sheet.png
@@ -25,34 +26,13 @@ demos:
   - web-walkthrough
   - validated
   - viewer-facing
-- id: work-hub-connect-focus-tour
-  title: 'Work Hub: Focus Mode and Connect Hub'
-  kind: guided product tour
-  status: better demo - generated
-  created_video: true
-  production_status: final
-  featured: true
-  tool: Work Hub
-  topic: Focus Mode and Connect evidence
-  thumbnail: examples/web_walkthroughs/work-hub/work-hub-connect-focus-tour-contact-sheet.png
-  media: examples/web_walkthroughs/work-hub/work-hub-connect-focus-tour.mp4
-  config: scripts/generate_work_hub_tour.py
-  description: Narrated tour of Work Hub with emphasis on Focus Mode for prioritized,
-    distraction-free execution with braindump capture, and Connect Hub for collating
-    and summarizing customer impact evidence.
-  tags:
-  - work-hub
-  - focus-mode
-  - connect-hub
-  - guided-tour
-  - prioritization
-  - impact-evidence
 - title: Introducing Meeting Sanitizer
   kind: sanitizer
   status: better demo - generated
   created_video: true
-  production_status: draft
-  featured: false
+  production_status: final
+  featured: true
+  front_page: true
   tool: Meeting Sanitizer
   topic: Privacy-safe meeting cleanup
   media: examples/better_demos/sanitizer_review_first_demo.mp4
@@ -70,8 +50,9 @@ demos:
   kind: clip extraction
   status: better demo - generated
   created_video: true
-  production_status: draft
-  featured: false
+  production_status: final
+  featured: true
+  front_page: true
   tool: Clip Extractor
   topic: Publishable clip extraction
   media: examples/better_demos/clip_extractor_publishable_demo.mp4
@@ -89,8 +70,9 @@ demos:
   status: better demo - generated
   created_video: true
   production_status: final
-  featured: false
-  example: true
+  featured: true
+  front_page: true
+  example: false
   tool: Technical Explainer Studio
   topic: Source-grounded technical teaching
   media: examples/better_demos/technical_explainer_studio_demo.mp4
@@ -104,6 +86,163 @@ demos:
   - app-overview
   - advisory
   - understanding
+- id: tool-test-creator-overview-clip
+  title: 'Tool test: Demo Video Creator overview'
+  kind: creator
+  status: tool test clip - generated
+  created_video: true
+  production_status: test
+  featured: false
+  tool: Demo Video Creator
+  topic: Product demo creation
+  media: examples/better_demos/clips/creator-video-creator-overview.mp4
+  config: examples/better_demos/creator_decision_review_demo.yaml
+  description: Short test clip validating the Demo Video Creator overview scene.
+  tags:
+  - demo-video-creator
+  - test-clip
+  - created-video-library
+- id: tool-test-creator-script-to-video
+  title: 'Tool test: Structured script to video'
+  kind: creator
+  status: tool test clip - generated
+  created_video: true
+  production_status: test
+  featured: false
+  tool: Demo Video Creator
+  topic: Script-to-video rendering
+  media: examples/better_demos/clips/creator-structured-script-to-video.mp4
+  config: examples/better_demos/creator_decision_review_demo.yaml
+  description: Test clip for converting a reviewed YAML script into a narrated demo scene.
+  tags:
+  - demo-video-creator
+  - yaml
+  - test-clip
+- id: tool-test-creator-validated-output
+  title: 'Tool test: Validated video output'
+  kind: creator
+  status: tool test clip - generated
+  created_video: true
+  production_status: test
+  featured: false
+  tool: Demo Video Creator
+  topic: Media validation
+  media: examples/better_demos/clips/creator-validated-video-output.mp4
+  config: examples/better_demos/creator_decision_review_demo.yaml
+  description: Test clip showing the final validation gate for rendered demo videos.
+  tags:
+  - demo-video-creator
+  - validation
+  - test-clip
+- id: tool-test-sanitizer-overview
+  title: 'Tool test: Meeting Sanitizer overview'
+  kind: sanitizer
+  status: tool test clip - generated
+  created_video: true
+  production_status: test
+  featured: false
+  tool: Meeting Sanitizer
+  topic: Privacy-safe meeting cleanup
+  media: examples/better_demos/clips/sanitizer-meeting-sanitizer-overview.mp4
+  config: examples/better_demos/sanitizer_review_first_demo.yaml
+  description: Short test clip validating the Meeting Sanitizer overview scene.
+  tags:
+  - meeting-sanitizer
+  - test-clip
+  - review-first
+- id: tool-test-sanitizer-review-before-render
+  title: 'Tool test: Review before render'
+  kind: sanitizer
+  status: tool test clip - generated
+  created_video: true
+  production_status: test
+  featured: false
+  tool: Meeting Sanitizer
+  topic: Review gates
+  media: examples/better_demos/clips/sanitizer-review-before-render.mp4
+  config: examples/better_demos/sanitizer_review_first_demo.yaml
+  description: Test clip focused on sanitizer review gates before final rendering.
+  tags:
+  - meeting-sanitizer
+  - review-first
+  - test-clip
+- id: tool-test-clip-extractor-overview
+  title: 'Tool test: Clip Extractor overview'
+  kind: clip extraction
+  status: tool test clip - generated
+  created_video: true
+  production_status: test
+  featured: false
+  tool: Clip Extractor
+  topic: Publishable clip extraction
+  media: examples/better_demos/clips/clip-clip-extractor-overview.mp4
+  config: examples/better_demos/clip_extractor_publishable_demo.yaml
+  description: Short test clip validating the Clip Extractor overview scene.
+  tags:
+  - clip-extractor
+  - test-clip
+  - publishable
+- id: tool-test-clip-extractor-workflow
+  title: 'Tool test: Publishable clip workflow'
+  kind: clip extraction
+  status: tool test clip - generated
+  created_video: true
+  production_status: test
+  featured: false
+  tool: Clip Extractor
+  topic: Publishable clip workflow
+  media: examples/better_demos/clips/clip-publishable-clip-workflow.mp4
+  config: examples/better_demos/clip_extractor_publishable_demo.yaml
+  description: Test clip for intentional ranges, titles, categories, and clean output validation.
+  tags:
+  - clip-extractor
+  - ranges
+  - test-clip
+- id: tool-test-technical-overview
+  title: 'Tool test: Technical Explainer overview'
+  kind: technical explainer
+  status: tool test clip - generated
+  created_video: true
+  production_status: test
+  featured: false
+  tool: Technical Explainer Studio
+  topic: Source-grounded technical teaching
+  media: examples/better_demos/clips/technical-technical-explainer-overview.mp4
+  config: examples/better_demos/technical_explainer_studio_demo.yaml
+  description: Short test clip validating the Technical Explainer Studio overview scene.
+  tags:
+  - technical-explainer
+  - test-clip
+  - teaching
+- id: tool-test-technical-confusion-to-clarity
+  title: 'Tool test: Confusion to clarity'
+  kind: technical explainer
+  status: tool test clip - generated
+  created_video: true
+  production_status: test
+  featured: false
+  tool: Technical Explainer Studio
+  topic: Misunderstanding correction
+  media: examples/better_demos/clips/technical-confusion-to-clarity.mp4
+  config: examples/better_demos/technical_explainer_studio_demo.yaml
+  description: Test clip for transforming a confusing technical topic into a viewer-centered explanation.
+  tags:
+  - technical-explainer
+  - learning-design
+  - test-clip
+- id: tool-test-video-hub-guided-tour
+  title: 'Tool test: Video Hub guided tour'
+  kind: web walkthrough
+  status: web walkthrough - generated
+  tool: Demo Video Creator
+  topic: Guided web tour capture
+  media: examples/web_walkthroughs/cat-video-tools-portal-walkthrough-narrated.mp4
+  config: examples/web_walkthroughs/cat-video-tools-portal-walkthrough-narrated.walkthrough.yaml
+  description: Generated guided tour of the Video Hub UI, kept as a Demo Video Creator test asset.
+  tags:
+  - video-hub
+  - web-walkthrough
+  - test-clip
 - id: evaluation-learning-series-part-1
   title: 'Standalone course video: Evaluating agents - Part 1: Start with value'
   status: standalone learning series - evaluating agents (generated)

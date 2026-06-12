@@ -23,6 +23,59 @@ The app remains the deterministic renderer and media processor. The skills are p
 4. Bring the reviewed output back into CAT Video Tools.
 5. Render only after the app audit/preview/review step is complete.
 
+## Natural-language prompt starters
+
+### Meeting Sanitizer
+
+```text
+Use skills/meeting-sanitizer-plan.md. I have a recording and transcript to clean up.
+Keep these speakers: [...]
+Remove/mask these people or sections: [...]
+Known timestamps/transcript notes: [...]
+Create a review-first sanitizer plan and starter YAML. Do not invent timestamps.
+```
+
+### Clip Extractor
+
+```text
+Use skills/clip-extractor-plan.md. I need short publishable clips from a long recording.
+Audience: [...]
+Topics to emphasize: [...]
+Transcript notes or rough timestamps: [...]
+Return paste-ready ranges: MM:SS - MM:SS | title | category. Do not invent timestamps.
+```
+
+### Demo Video Creator
+
+```text
+Use skills/demo-video-draft.md. Create CAT Video Tools YAML for a product demo.
+Product/feature: [...]
+Audience: [...]
+Problem and value: [...]
+Assets/page URL/walkthrough notes: [...]
+Return only valid YAML with placeholder media paths where needed.
+```
+
+### Technical Explainer Studio
+
+```text
+Use skills/technical-learning-video.md. Create a source-grounded learning video plan.
+Topic: [...]
+Audience: [...]
+Misunderstanding to correct: [...]
+Sources/assets: [...]
+Produce a storyboard, narration intent, visual strategy, two-pass review, and QA checklist.
+```
+
+## Best prompting practices
+
+- Give the viewer, purpose, and source material before asking for YAML.
+- Use exact transcript speaker names and known timestamps when possible.
+- Ask for `review_needed` instead of letting the assistant guess.
+- Require viewer-facing titles and openings.
+- Keep generated YAML reviewable: short scenes, clear assets, no hidden production tasks.
+- Bring plans back into the app and render only after audit/preview.
+
 ## Package decision
 
 Do not turn these prompt skills into Python or npm packages yet. They are intentionally lightweight, editable instructions.

@@ -1,18 +1,18 @@
 {
   "videos": {
-    "creator": "C://src//teams-meeting-sanitizer//examples//better_demos//creator_decision_review_demo.mp4",
-    "clip": "C://src//teams-meeting-sanitizer//examples//better_demos//clip_extractor_publishable_demo.mp4",
-    "sanitizer": "C://src//teams-meeting-sanitizer//examples//better_demos//sanitizer_review_first_demo.mp4",
-    "technical": "C://src//teams-meeting-sanitizer//examples//better_demos//technical_explainer_studio_demo.mp4"
+    "creator": "examples/better_demos/creator_decision_review_demo.mp4",
+    "clip": "examples/better_demos/clip_extractor_publishable_demo.mp4",
+    "sanitizer": "examples/better_demos/sanitizer_review_first_demo.mp4",
+    "technical": "examples/better_demos/technical_explainer_studio_demo.mp4"
   },
   "clips": [
-    "C://src//teams-meeting-sanitizer//examples//better_demos//clips//creator-video-creator-overview.mp4",
-    "C://src//teams-meeting-sanitizer//examples//better_demos//clips//creator-structured-script-to-video.mp4",
-    "C://src//teams-meeting-sanitizer//examples//better_demos//clips//clip-clip-extractor-overview.mp4",
-    "C://src//teams-meeting-sanitizer//examples//better_demos//clips//sanitizer-meeting-sanitizer-overview.mp4",
-    "C://src//teams-meeting-sanitizer//examples//better_demos//clips//technical-technical-explainer-overview.mp4"
+    "examples/better_demos/clips/creator-video-creator-overview.mp4",
+    "examples/better_demos/clips/creator-structured-script-to-video.mp4",
+    "examples/better_demos/clips/clip-clip-extractor-overview.mp4",
+    "examples/better_demos/clips/sanitizer-meeting-sanitizer-overview.mp4",
+    "examples/better_demos/clips/technical-technical-explainer-overview.mp4"
   ],
-  "manifest": "C://src//teams-meeting-sanitizer//test//demo_manifest.yaml",
+  "manifest": "test/demo_manifest.yaml",
   "script_reviews": {
     "creator_decision_review_demo.yaml": [
       {

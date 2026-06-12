@@ -2,26 +2,26 @@
   "series": "Evaluating Copilot Studio Agents",
   "rendered": false,
   "outputs": [
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_01_start_with_value.mp4",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_02_starter_test_set.mp4",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_03_target_readiness.mp4",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_04_live_analytics.mp4",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_05_operationalize_quality.mp4"
+    "examples/learning_series/evaluating_agents/part_01_start_with_value.mp4",
+    "examples/learning_series/evaluating_agents/part_02_starter_test_set.mp4",
+    "examples/learning_series/evaluating_agents/part_03_target_readiness.mp4",
+    "examples/learning_series/evaluating_agents/part_04_live_analytics.mp4",
+    "examples/learning_series/evaluating_agents/part_05_operationalize_quality.mp4"
   ],
-  "manifest": "C://src//teams-meeting-sanitizer//test//demo_manifest.yaml",
+  "manifest": "test/demo_manifest.yaml",
   "mermaid": [
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//01-maker-value-loop.mmd",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//02-starter-contract.mmd",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//03-working-blind-readiness.mmd",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//04-production-evidence-loop.mmd",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//mermaid//05-quality-gate-automation.mmd"
+    "examples/learning_series/evaluating_agents/mermaid/01-maker-value-loop.mmd",
+    "examples/learning_series/evaluating_agents/mermaid/02-starter-contract.mmd",
+    "examples/learning_series/evaluating_agents/mermaid/03-working-blind-readiness.mmd",
+    "examples/learning_series/evaluating_agents/mermaid/04-production-evidence-loop.mmd",
+    "examples/learning_series/evaluating_agents/mermaid/05-quality-gate-automation.mmd"
   ],
   "scripts": [
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_01.yaml",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_02.yaml",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_03.yaml",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_04.yaml",
-    "C://src//teams-meeting-sanitizer//examples//learning_series//evaluating_agents//part_05.yaml"
+    "examples/learning_series/evaluating_agents/part_01.yaml",
+    "examples/learning_series/evaluating_agents/part_02.yaml",
+    "examples/learning_series/evaluating_agents/part_03.yaml",
+    "examples/learning_series/evaluating_agents/part_04.yaml",
+    "examples/learning_series/evaluating_agents/part_05.yaml"
   ],
   "script_reviews": {
     "part_01.yaml": [
