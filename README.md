@@ -152,7 +152,7 @@ Bring the reviewed storyboard into **Technical Explainer Studio** in the app, or
 
 The default hub page is the front door. It shows the four current demo videos for the four production tools:
 
-![Video Hub home page](examples/web_walkthroughs/screens/02-show-featured-demos.png)
+![Video Hub home page](examples/web_walkthroughs/screens/03-show-workflows.png)
 
 **Guided hub tour:** [Play narrated Video Hub tour](examples/web_walkthroughs/cat-video-tools-portal-walkthrough-narrated.mp4)
 
