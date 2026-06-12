@@ -26,7 +26,7 @@ python -m playwright install chromium
 streamlit run app.py
 ```
 
-Open the local URL Streamlit prints, usually `http://localhost:8501`.
+Open the local URL Streamlit prints, usually `http://localhost:8501`. This launches one hub, not separate apps. The sidebar gives users Home, Meeting Sanitizer, Clip Extractor, Demo Video Creator, Technical Explainer Studio, and Test Gallery in one place.
 
 The fast path is not app-only. Use Copilot CLI or Claw to create the right YAML or clip plan, then choose one of two execution paths:
 
@@ -195,13 +195,13 @@ The **Test Gallery** keeps the rest of the generated test assets so they are not
 
 ## Use the app
 
-Launch:
+Launch the hub:
 
 ```bash
 streamlit run app.py
 ```
 
-The app is designed around review-before-render workflows.
+This opens the single Guidance Video Tools hub. Users do not need to run four separate apps; the sidebar contains the four production tools plus the Test Gallery. The app is designed around review-before-render workflows.
 
 ### Meeting Sanitizer
 
