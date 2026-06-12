@@ -1163,26 +1163,26 @@ st.markdown("""
     .workflow-card {
         border: 1px solid #e5e7eb;
         border-radius: 18px;
-        padding: .8rem .95rem;
+        padding: .75rem .85rem;
         background: #ffffff;
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
-        min-height: 185px;
+        min-height: 178px;
     }
     .workflow-card h3 {
         margin: 0 0 .35rem 0;
         color: #111827;
-        font-size: 1.25rem;
+        font-size: 1.02rem;
     }
     .workflow-card p {
         color: #4b5563;
-        font-size: .9rem;
+        font-size: .8rem;
         margin-bottom: .45rem;
     }
     .workflow-card ul {
         margin: 0 0 .35rem 0;
         padding-left: 1.1rem;
         color: #374151;
-        font-size: .86rem;
+        font-size: .76rem;
     }
     .workflow-card li {
         margin-bottom: .12rem;
@@ -1282,11 +1282,11 @@ if tool == "🏠 Home":
         )
         render_workflow_video(kind)
 
-    card1, card2 = st.columns(2)
+    card1, card2, card3, card4 = st.columns(4)
     with card1:
         render_workflow_card(
             "✂️ Meeting Sanitizer",
-            "Prepare recorded meetings for safer sharing with review-first cuts, masking, and title/end cards.",
+            "Prepare recordings for safer reuse with review-first cuts, masking, and cards.",
             [
                 "Transcript-guided cuts and manual overrides",
                 "Presenter preservation and non-presenter masking",
@@ -1296,7 +1296,7 @@ if tool == "🏠 Home":
     with card2:
         render_workflow_card(
             "🎞️ Clip Extractor",
-            "Turn long recordings into intentional short clips with clean re-encoding and validated streams.",
+            "Turn long recordings into short clips with clean re-encoding and validation.",
             [
                 "Manual ranges with editable titles/categories",
                 "Normalized audio and FFprobe validation",
@@ -1304,11 +1304,10 @@ if tool == "🏠 Home":
             "clip extraction",
         )
 
-    card3, card4 = st.columns(2)
     with card3:
         render_workflow_card(
             "🎥 Demo Video Creator",
-            "Create short product demos and web walkthroughs from reviewed scripts, page steps, voice, and validation.",
+            "Create demos and guided tours from reviewed scripts, page steps, and voice.",
             [
                 "Structured script-to-demo workflow",
                 "Raw walkthrough footage plus narrated assembly",
@@ -1318,7 +1317,7 @@ if tool == "🏠 Home":
     with card4:
         render_workflow_card(
             "🧠 Technical Explainer Studio",
-            "Transform hard technical topics into source-grounded teaching videos with learning design before rendering.",
+            "Turn hard topics into source-grounded teaching videos and storyboards.",
             [
                 "User framing, misunderstandings, and feature focus",
                 "Microsoft Learn pages, local folders, screenshots, demos",
