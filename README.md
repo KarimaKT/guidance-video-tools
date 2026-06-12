@@ -250,41 +250,41 @@ The smoke test synthesizes short video/audio assets with FFmpeg, renders segment
 
 ```mermaid
 flowchart TB
-    User[User] --> App[Streamlit app.py]
-    User --> CLI[CLI entry points]
-    User --> Skills[Portable skills in skills/]
+    User["User"] --> App["Streamlit app.py"]
+    User --> CLI["CLI entry points"]
+    User --> Skills["Portable skills in skills/"]
 
-    Skills --> Plans[Plans, clip ranges, YAML drafts, storyboards]
+    Skills --> Plans["Plans, clip ranges, YAML drafts, storyboards"]
     Plans --> App
 
-    App --> SanitizerUI[Meeting Sanitizer UI]
-    App --> ClipUI[Clip Extractor UI]
-    App --> CreatorUI[Demo Video Creator UI]
-    App --> ExplainerUI[Technical Explainer Studio UI]
-    App --> Gallery[Test Gallery]
+    App --> SanitizerUI["Meeting Sanitizer UI"]
+    App --> ClipUI["Clip Extractor UI"]
+    App --> CreatorUI["Demo Video Creator UI"]
+    App --> ExplainerUI["Technical Explainer Studio UI"]
+    App --> Gallery["Test Gallery"]
 
-    CLI --> SanitizeCLI[sanitizer/sanitize.py]
-    CLI --> VideoCreatorCLI[creator/video_creator.py]
+    CLI --> SanitizeCLI["sanitizer/sanitize.py"]
+    CLI --> VideoCreatorCLI["creator/video_creator.py"]
 
-    SanitizerUI --> MeetingEditor[sanitizer/meeting_editor.py]
+    SanitizerUI --> MeetingEditor["sanitizer/meeting_editor.py"]
     SanitizeCLI --> MeetingEditor
 
-    ClipUI --> ClipExtractor[sanitizer/clip_extractor.py]
-    CreatorUI --> VideoCreator[creator/video_creator.py]
+    ClipUI --> ClipExtractor["sanitizer/clip_extractor.py"]
+    CreatorUI --> VideoCreator["creator/video_creator.py"]
     VideoCreatorCLI --> VideoCreator
     ExplainerUI --> VideoCreator
 
-    CreatorUI --> WebTour[creator/web_walkthrough.py]
-    Gallery --> Manifest[test/demo_manifest.yaml]
+    CreatorUI --> WebTour["creator/web_walkthrough.py"]
+    Gallery --> Manifest["test/demo_manifest.yaml"]
 
-    MeetingEditor --> MediaPipeline[sanitizer/media_pipeline.py]
+    MeetingEditor --> MediaPipeline["sanitizer/media_pipeline.py"]
     ClipExtractor --> MediaPipeline
     VideoCreator --> MediaPipeline
     WebTour --> MediaPipeline
 
-    MediaPipeline --> FFmpeg[FFmpeg / FFprobe]
-    VideoCreator --> EdgeTTS[Microsoft Edge TTS]
-    WebTour --> Playwright[Playwright Chromium]
+    MediaPipeline --> FFmpeg["FFmpeg and FFprobe"]
+    VideoCreator --> EdgeTTS["Microsoft Edge TTS"]
+    WebTour --> Playwright["Playwright Chromium"]
 ```
 
 ### Key modules
