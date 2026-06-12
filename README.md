@@ -26,7 +26,13 @@ python -m playwright install chromium
 streamlit run app.py
 ```
 
-Open the local URL Streamlit prints, usually `http://localhost:8501`. This launches one hub, not separate apps. The sidebar gives users Home, Meeting Sanitizer, Clip Extractor, Demo Video Creator, Technical Explainer Studio, and Test Gallery in one place.
+Open the local URL Streamlit prints, usually `http://localhost:8501`. If that port is already in use, Streamlit may print a different local URL; use the URL shown in the terminal. This launches one hub, not separate apps. The sidebar gives users Home, Meeting Sanitizer, Clip Extractor, Demo Video Creator, Technical Explainer Studio, and Test Gallery in one place.
+
+To choose a port explicitly:
+
+```bash
+streamlit run app.py --server.port 8601
+```
 
 The fast path is not app-only. Use Copilot CLI or Claw to create the right YAML or clip plan, then choose one of two execution paths:
 
@@ -201,7 +207,7 @@ Launch the hub:
 streamlit run app.py
 ```
 
-This opens the single Guidance Video Tools hub. Users do not need to run four separate apps; the sidebar contains the four production tools plus the Test Gallery. The app is designed around review-before-render workflows.
+This opens the single Guidance Video Tools hub. Users do not need to run four separate apps; the sidebar contains the four production tools plus the Test Gallery. If `8501` is busy, use the alternate URL Streamlit prints or start with `streamlit run app.py --server.port 8601`. The app is designed around review-before-render workflows.
 
 ### Meeting Sanitizer
 
