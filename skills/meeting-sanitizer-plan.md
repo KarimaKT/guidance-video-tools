@@ -2,6 +2,10 @@
 
 Generate review-first Meeting Sanitizer prep notes: keep speakers, candidate cut ranges, masking/verification notes, title/end cards, and QA checklist.
 
+## See also
+
+For engine internals (disturbance patterns, bleed threshold, layout detection, audio filters, CRF, Python API), see \skills/meeting-sanitizer-internals.md\.
+
 ## Use when
 
 You have a recording/transcript scenario and want a plan before uploading files into Meeting Sanitizer.
@@ -40,4 +44,5 @@ Quality rules:
 - Do not invent exact timestamps. If timestamps are unavailable, say `timestamp needed`.
 - Avoid internal implementation language.
 - Focus on safer sharing, presenter preservation, disturbance removal, masking, and final QA.
+
 

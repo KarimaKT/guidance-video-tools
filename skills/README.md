@@ -9,6 +9,7 @@ The app remains the deterministic renderer and media processor. The skills are p
 | Skill | Use before | Output to bring back |
 |---|---|---|
 | `/meeting-sanitizer-plan` | Meeting Sanitizer | Keep speakers, candidate cut ranges, masking checks, title/end-card text, review checklist |
+| `meeting-sanitizer-internals.md` | Debugging / advanced sanitizer use | Engine internals: disturbance patterns, bleed threshold, layout detection, audio filters, CRF, Python API |
 | `/clip-extractor-plan` | Clip Extractor | Paste-ready clip ranges, viewer-facing titles, categories, review notes |
 | `/demo-video-draft` | Demo Video Creator | Demo Video Creator YAML with screenshot/video placeholders |
 | `/technical-learning-video` | Technical Explainer Studio | Topic brief, source notes, storyboard, learning arc guidance |
@@ -89,3 +90,4 @@ Package candidates are the deterministic engines:
 - `creator/web_walkthrough.py`
 
 Those should become a Python package only after the public API is stable and the generated/demo artifacts are curated out of source control.
+
