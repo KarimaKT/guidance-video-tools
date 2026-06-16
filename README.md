@@ -439,6 +439,10 @@ flowchart TB
 - **FFmpeg and FFprobe** on PATH
   - Windows: `winget install Gyan.FFmpeg`
   - macOS: `brew install ffmpeg`
+- **Microsoft Edge TTS** (`edge-tts`) for narrated video output
+  - Installed via `pip install -r requirements.txt`
+  - Requires an **internet connection at render time** — TTS is streamed from Microsoft's neural speech service
+  - Used by Demo Video Creator, Technical Explainer Studio, and web walkthroughs; not needed for Meeting Sanitizer or Clip Extractor
 - **Playwright Chromium** for guided web-tour capture
   - `python -m playwright install chromium`
 - Optional: **Node.js** if you want to use `npm test` as the smoke-test wrapper
